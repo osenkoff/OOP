@@ -1,47 +1,37 @@
 import 'dart:io';
 
 class FileCopier {
-  String? inputFilePath;
-  String? outputFilePath;
+  void copyToOutput(
+      {required String inputFilePath, required String outputFilePath}) async {
+    final inputFile = File(inputFilePath);
+    final outputFile = File(outputFilePath);
 
-  FileCopier(this.inputFilePath, this.outputFilePath);
-
-  void copyToFile(File inputFile, File outputFile) async {
-    final content = await inputFile.readAsString();
-    await outputFile.writeAsString(content);
-    stdout.write("Copied successfully");
-  }
-
-  void copy() async {
-    File inputFile = File(inputFilePath!);
-    File outputFile = File(outputFilePath!);
-
-    if(!await inputFile.exists()) {
-      stdout.write("Input file does not exist");
-    } else if (!await outputFile.exists()) {
-      stdout.write("Output file does not exist! Create? \nWrite y/n: ");
-      if(stdin.readLineSync() == 'y') {
-        await outputFile.create();
-        copyToFile(inputFile, outputFile);
-      } else {
-        stdout.write("Output file does not exist");
-      }
-    } else {
-      copyToFile(inputFile, outputFile);
+    if (!await inputFile.existsSync()) {
+      throw Exception(
+        'File is not exist. Need to set the correct file path',
+      );
     }
+
+    final content = await inputFile.readAsString();
+
+    if (!await outputFile.existsSync()) {
+      outputFile.create();
+      await outputFile.writeAsString(content);
+    } else {
+      await outputFile.writeAsString(content);
+    }
+
+    stdout.write('Successed');
   }
 }
 
-/* To run this program write:
-     dart compile exe copyfile.dart
-   then
-     copyfile.exe <input file name.txt> <output file name.txt>
-*/
+void main(List<String> arguments) async {
+  final fileCopier = FileCopier();
 
-void main(List<String> args) {
-  final inputFile = args[0];
-  final outputFile = args[1];
-
-  final fileCopier = FileCopier(inputFile, outputFile);
-  fileCopier.copy();
+  try {
+    fileCopier.copyToOutput(
+        inputFilePath: arguments[0], outputFilePath: arguments[1]);
+  } on Exception catch (e) {
+    stdout.writeln('Error: ${e.toString()}');
+  }
 }
