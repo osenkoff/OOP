@@ -17,11 +17,11 @@ class FileCopier {
     if (!await outputFile.existsSync()) {
       outputFile.create();
       await outputFile.writeAsString(content);
+      stdout.write('Successed');
     } else {
       await outputFile.writeAsString(content);
+      stdout.write('Successed');
     }
-
-    stdout.write('Successed');
   }
 }
 
