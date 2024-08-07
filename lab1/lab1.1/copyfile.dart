@@ -2,22 +2,22 @@ import 'dart:async';
 import 'dart:io';
 
 class FileCopier {
-  Future<void> copyToOutput(
-      {required String inputFilePath, required String outputFilePath}) async {
-    final inputFile = File(inputFilePath);
-    final outputFile = File(outputFilePath);
+  Future<void> copyTosecond(
+      {required String firstFilePath, required String secondFilePath}) async {
+    final firstFile = File(firstFilePath);
+    final secondFile = File(secondFilePath);
 
-    if (!inputFile.existsSync()) {
+    if (!firstFile.existsSync()) {
       throw 'File is not exist. Need to set the correct file path';
     }
 
-    final content = await inputFile.readAsString();
+    final content = await firstFile.readAsString();
 
-    if (!outputFile.existsSync()) {
-      outputFile.create();
+    if (!secondFile.existsSync()) {
+      secondFile.create();
     }
 
-    await outputFile.writeAsString(content);
+    await secondFile.writeAsString(content);
   }
 }
 
@@ -25,8 +25,8 @@ void main(List<String> arguments) async {
   final fileCopier = FileCopier();
 
   try {
-    await fileCopier.copyToOutput(
-        inputFilePath: arguments[0], outputFilePath: arguments[1]);
+    await fileCopier.copyTosecond(
+        firstFilePath: arguments[0], secondFilePath: arguments[1]);
     print('You successfully copied file');
   } catch (e) {
     print('Error: ${e.toString()}');
