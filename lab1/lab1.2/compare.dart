@@ -1,36 +1,42 @@
 import 'dart:io';
 
-class Comparing {
-  File? file1;
-  File? file2;
-  List<String> firstFileList = [];
-  List<String> secondFileList = [];
-  bool? isEqual = true;
+class CompareFiles {
+  Future<void> isEqual(
+      {required String firstFilePath, required String secondFilePath}) async {
+    final firstFile = File(firstFilePath);
+    final secondFile = File(secondFilePath);
 
-  void compareFiles() async {
-    var firstFileLines = await file1?.readAsLines();
-    var secondFileLines = await file2?.readAsLines();
-    for(final line in firstFileLines!) {
-      firstFileList.add(line);
+    if (!firstFile.existsSync()) {
+      throw 'first file do not exist! Create it or enter right path';
     }
-    for(final line in secondFileLines!) {
-      secondFileList.add(line);
+
+    if (!secondFile.existsSync()) {
+      throw 'second file do not exist! Create it or enter right path';
     }
-    for(int i = 0; i < firstFileList.length && i < secondFileList.length; i++) {
-      if((firstFileList[i] != secondFileList[i])) {
-        isEqual = false;
-        print("Files are different. Line number is ${i + 1}");
+
+    final firstFileContent = await firstFile.readAsLines();
+    final secondFileContent = await secondFile.readAsLines();
+
+    for (var i = 0; i < firstFileContent.length; i++) {
+      if ((firstFileContent[i] != secondFileContent[i]) ||
+          secondFileContent[i].isEmpty) {
+        exit;
+        throw 'Files are not equal. Line number is ${i + 1}';
+      } else {
+        continue;
       }
-    }
-    if(isEqual ?? true) {
-      print("Files are equals");
     }
   }
 }
 
-void main() {
-  Comparing compare = Comparing();
-  compare.file1 = File("file1.txt");
-  compare.file2 = File("file2.txt");
-  compare.compareFiles();
+void main(List<String> arguments) async {
+  final comparingFiles = CompareFiles();
+
+  try {
+    await comparingFiles.isEqual(
+        firstFilePath: arguments[0], secondFilePath: arguments[1]);
+    print('Files are equals');
+  } catch (e) {
+    print(e.toString());
+  }
 }
