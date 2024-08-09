@@ -1,8 +1,12 @@
 import 'dart:io';
 
 class CompareFiles {
-  Future<void> isEqual(
-      {required String firstFilePath, required String secondFilePath}) async {
+  int lineNumber = 0;
+
+  Future<bool?> isEqual({
+    required String firstFilePath,
+    required String secondFilePath,
+  }) async {
     final firstFile = File(firstFilePath);
     final secondFile = File(secondFilePath);
 
@@ -17,25 +21,31 @@ class CompareFiles {
     final firstFileContent = await firstFile.readAsLines();
     final secondFileContent = await secondFile.readAsLines();
 
-    for (var i = 0; i < firstFileContent.length; i++) {
-      if ((firstFileContent[i] != secondFileContent[i]) ||
-          secondFileContent[i].isEmpty) {
-        exit;
-        throw 'Files are not equal. Line number is ${i + 1}';
-      } else {
+    for (lineNumber; lineNumber < firstFileContent.length; lineNumber++) {
+      if (firstFileContent[lineNumber].contains(secondFileContent[lineNumber])) {
         continue;
+      } else {
+        return false;
       }
     }
+    return null;
   }
 }
 
 void main(List<String> arguments) async {
   final comparingFiles = CompareFiles();
+  final isEqualCheck = await comparingFiles.isEqual(
+    firstFilePath: arguments[0],
+    secondFilePath: arguments[1],
+  );
+  final int lineNumber = comparingFiles.lineNumber;
 
   try {
-    await comparingFiles.isEqual(
-        firstFilePath: arguments[0], secondFilePath: arguments[1]);
-    print('Files are equals');
+    if (isEqualCheck ?? true) {
+      print('Files are equal!');
+    } else {
+      throw 'Files are not equals! Line number is ${lineNumber + 1}';
+    }
   } catch (e) {
     print(e.toString());
   }
