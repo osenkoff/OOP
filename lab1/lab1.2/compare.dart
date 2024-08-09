@@ -19,8 +19,6 @@ class CompareFiles {
       throw 'second file do not exist! Create it or enter right path';
     }
 
-    bool isEqualState = true;
-
     final firstFileContent = await firstFile.readAsLines();
     final secondFileContent = await secondFile.readAsLines();
 
@@ -28,27 +26,27 @@ class CompareFiles {
       if (firstFileContent[_line].contains(secondFileContent[_line])) {
         continue;
       } else {
-        return isEqualState = false;
+        return false;
       }
     }
-    return isEqualState;
+    return true;
   }
   static int get line => _line;
 }
 
 void main(List<String> arguments) async {
   final comparingFiles = CompareFiles();
-  final isEqualCheck = await comparingFiles.isEqual(
+  final filesAreEqual = await comparingFiles.isEqual(
     firstFilePath: arguments[0],
     secondFilePath: arguments[1],
   );
-  final int getLineNumber = CompareFiles.line;
 
   try {
-    if (isEqualCheck) {
+    if (filesAreEqual) {
       print('Files are equal!');
     } else {
-      throw 'Files are not equals! Line number is ${getLineNumber + 1}';
+      final int mismatchLine = CompareFiles.line;
+      throw 'Files are not equals! Line number is ${mismatchLine + 1}';
     }
   } catch (e) {
     print(e.toString());
