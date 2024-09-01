@@ -1,45 +1,27 @@
 import 'dart:async';
-import 'dart:io';
+
+import 'package:file/file.dart';
 
 class FileCopier {
   Future<bool> copyToOutput({
-    required String inputFilePath,
-    required String outputFilePath,
+    required File inputFile,
+    required File outputFile,
   }) async {
-    final inputFile = File(inputFilePath);
-    final outputFile = File(outputFilePath);
-
     isInputFileExist(inputFile: inputFile);
 
-    final content = await inputFile.readAsString();
-
     if (!outputFile.existsSync()) {
-      outputFile.create();
+      outputFile.createSync(recursive: true);
     }
 
-    await outputFile.writeAsString(content);
+    await inputFile.copy(outputFile.path);
     return true;
   }
 
   Future<bool> isInputFileExist({required File inputFile}) async {
-    if (!await inputFile.exists()) {
+    if (!inputFile.existsSync()) {
       throw Exception('File is not exist. Need to set the correct file path');
     } else {
       return true;
     }
-  }
-}
-
-void main(List<String> arguments) async {
-  final fileCopier = FileCopier();
-
-  try {
-    await fileCopier.copyToOutput(
-      inputFilePath: arguments[0],
-      outputFilePath: arguments[1],
-    );
-    print('You successfully copied file');
-  } catch (e) {
-    print('Error: ${e.toString()}');
   }
 }
