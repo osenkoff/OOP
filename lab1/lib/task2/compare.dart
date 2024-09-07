@@ -1,10 +1,10 @@
 class CompareFiles {
   static int _line = 0;
 
-  Future<bool> isEqual({
+  bool isEqual({
     required List<String> firstFileContent,
     required List<String> secondFileContent,
-  }) async {
+  }) {
     for (_line; _line < firstFileContent.length; _line++) {
       if (firstFileContent[_line] == secondFileContent[_line]) {
         continue;

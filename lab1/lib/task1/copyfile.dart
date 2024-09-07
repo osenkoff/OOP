@@ -17,7 +17,7 @@ class FileCopier {
     return true;
   }
 
-  Future<bool> isInputFileExist({required File inputFile}) async {
+  bool isInputFileExist({required File inputFile}) {
     if (!inputFile.existsSync()) {
       throw Exception('File is not exist. Need to set the correct file path');
     } else {

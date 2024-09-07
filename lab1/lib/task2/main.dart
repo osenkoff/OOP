@@ -11,7 +11,7 @@ void main(List<String> arguments) async {
   var firstFileContent = await firstFile.readAsLines();
   var secondFileContent = await secondFile.readAsLines();
 
-  final filesAreEqual = await comparingFiles.isEqual(
+  final filesAreEqual = comparingFiles.isEqual(
     firstFileContent: firstFileContent,
     secondFileContent: secondFileContent,
   );
