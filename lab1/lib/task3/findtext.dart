@@ -1,8 +1,7 @@
 class FindText {
-  static int _line = 0;
-  static final _matchingStrings = [];
+  static final List<int> _matchingStrings = [];
 
-  int getMatchedStrings({
+  List<int> getMatchedStrings({
     required List<String> fileContent,
     required String searchString,
   }) {
@@ -14,35 +13,24 @@ class FindText {
       throw Exception("Empty string");
     }
 
-    for (_line; _line < fileContent.length; _line++) {
-      if (areStringsMatched(
-        matchString: fileContent[_line],
+    for (int line = 0; line < fileContent.length; line++) {
+      final containsSearch = areStringsMatched(
+        matchString: fileContent[line],
         searchString: searchString,
-      )) {
-        _matchingStrings.add(_line + 1);
-      } else {
-        continue;
+      );
+      if (containsSearch) {
+        _matchingStrings.add(line + 1);
       }
     }
-    if (_matchingStrings.isNotEmpty) {
-      return 1;
-    } else {
-      return 0;
-    }
+    return matchingStrings;
   }
 
   bool areStringsMatched({
     required String matchString,
     required String searchString,
   }) {
-    if (matchString.contains(searchString)) {
-      return true;
-    } else {
-      return false;
-    }
+    return matchString.contains(searchString) ? true : false;
   }
-
-  static int get line => _line;
 
   static get matchingStrings => _matchingStrings;
 }

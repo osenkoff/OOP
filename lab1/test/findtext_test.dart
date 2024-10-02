@@ -14,11 +14,12 @@ void main() {
       String searchString = "";
 
       expect(
-              () => findText.getMatchedStrings(
-            fileContent: fileContent,
-            searchString: searchString,
-          ),
-          throwsException);
+        () => findText.getMatchedStrings(
+          fileContent: fileContent,
+          searchString: searchString,
+        ),
+        throwsException,
+      );
     });
 
     test("Empty file and not empty search string finished with exception", () {
@@ -27,11 +28,12 @@ void main() {
       String searchString = "example";
 
       expect(
-              () => findText.getMatchedStrings(
-            fileContent: fileContent,
-            searchString: searchString,
-          ),
-          throwsException);
+        () => findText.getMatchedStrings(
+          fileContent: fileContent,
+          searchString: searchString,
+        ),
+        throwsException,
+      );
     });
 
     test("Not empty file and empty search string finished with exception", () {
@@ -40,11 +42,12 @@ void main() {
       String searchString = "";
 
       expect(
-              () => findText.getMatchedStrings(
-            fileContent: fileContent,
-            searchString: searchString,
-          ),
-          throwsException);
+        () => findText.getMatchedStrings(
+          fileContent: fileContent,
+          searchString: searchString,
+        ),
+        throwsException,
+      );
     });
   });
 
@@ -60,12 +63,12 @@ void main() {
         searchString: searchString,
       );
 
-      expect(isTextContains, 0);
+      expect(isTextContains, isEmpty);
     });
 
     test("The search text contains in file", () {
       // Arrange
-      List<String> fileContent = ["test sample"];
+      List<String> fileContent = ["test sample", "sample test"];
       String searchString = "test";
 
       // Act
@@ -74,7 +77,7 @@ void main() {
         searchString: searchString,
       );
 
-      expect(isTextNotContains, 1);
+      expect(isTextNotContains, isNotEmpty);
     });
   });
 }

@@ -15,11 +15,9 @@ void main(List<String> arguments) async {
     searchString: searchString,
   );
 
-  var lines = FindText.matchingStrings;
-
   try {
-    if (matchStrings == 1) {
-      lines.forEach((value) => print(value));
+    if (matchStrings.isNotEmpty) {
+      print(matchStrings);
     } else {
       print("Text not found");
     }
