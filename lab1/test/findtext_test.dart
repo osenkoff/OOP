@@ -9,7 +9,7 @@ void main() {
   });
 
   group("Does the program return an exception", () {
-    test("An empty file and an empty search string resulted in an exception.",
+    test("An empty file and an empty search string are resulted in the exception.",
         () {
       List<String> fileContent = [];
       String searchString = "";
@@ -24,7 +24,7 @@ void main() {
     });
 
     test(
-        "An empty file and a non-empty search string resulted in an exception.",
+        "An empty file and a non-empty search string are resulted in the exception.",
         () {
       // Arrange
       List<String> fileContent = [];
@@ -40,7 +40,7 @@ void main() {
     });
 
     test(
-        "A non-empty file and an empty search string resulted in an exception.",
+        "A non-empty file and an empty search string are resulted in the exception.",
         () {
       // Arrange
       List<String> fileContent = ["example"];
@@ -56,7 +56,7 @@ void main() {
     });
   });
 
-  group("Does the file contain the text?", () {
+  group("Does the file contain the text", () {
     test("The search text is not contained in the file.", () {
       // Arrange
       List<String> fileContent = ["example test", "test", "example sample"];

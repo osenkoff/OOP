@@ -17,7 +17,7 @@ void main(List<String> arguments) async {
 
   try {
     if (matchStrings.isNotEmpty) {
-      print(matchStrings);
+      matchStrings.forEach(print);
     } else {
       print("Text not found");
     }
