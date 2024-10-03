@@ -8,8 +8,9 @@ void main() {
     findText = FindText();
   });
 
-  group("Did program return exception result", () {
-    test("Empty file and empty search string finished with exception", () {
+  group("Does the program return an exception", () {
+    test("An empty file and an empty search string resulted in an exception.",
+        () {
       List<String> fileContent = [];
       String searchString = "";
 
@@ -22,7 +23,9 @@ void main() {
       );
     });
 
-    test("Empty file and not empty search string finished with exception", () {
+    test(
+        "An empty file and a non-empty search string resulted in an exception.",
+        () {
       // Arrange
       List<String> fileContent = [];
       String searchString = "example";
@@ -36,7 +39,9 @@ void main() {
       );
     });
 
-    test("Not empty file and empty search string finished with exception", () {
+    test(
+        "A non-empty file and an empty search string resulted in an exception.",
+        () {
       // Arrange
       List<String> fileContent = ["example"];
       String searchString = "";
@@ -51,8 +56,8 @@ void main() {
     });
   });
 
-  group("Did text contains in file", () {
-    test("The search text did not contains in file", () {
+  group("Does the file contain the text?", () {
+    test("The search text is not contained in the file.", () {
       // Arrange
       List<String> fileContent = ["example test", "test", "example sample"];
       String searchString = "123";
@@ -66,7 +71,7 @@ void main() {
       expect(isTextContains, isEmpty);
     });
 
-    test("The search text contains in file", () {
+    test("The search text is contained in the file.", () {
       // Arrange
       List<String> fileContent = ["test sample", "sample test"];
       String searchString = "test";

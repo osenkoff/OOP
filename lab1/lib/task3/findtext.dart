@@ -6,11 +6,11 @@ class FindText {
     required String searchString,
   }) {
     if (fileContent.isEmpty) {
-      throw Exception("Empty file");
+      throw Exception("Empty content found in file");
     }
 
     if (searchString.isEmpty) {
-      throw Exception("Empty string");
+      throw Exception("Empty search result: search string no found");
     }
 
     for (int line = 0; line < fileContent.length; line++) {
