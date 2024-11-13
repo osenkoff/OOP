@@ -1,2 +1,10 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Работа с консолью
+
+Для запуска программы используйте файл `main.dart`
+
+Принимаются следующие параметры:
+ - action - действие, совершаемое над массивом
+
+Вызов команды с параметрами `main.dart --action=1`
+
+Для вызова всех имеющихся действий используйте `--help` или `-h`
