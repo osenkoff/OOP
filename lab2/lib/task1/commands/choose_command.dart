@@ -43,7 +43,7 @@ class ChooseActionCommand extends Command {
   Future<ActionResult> getActionResult(String actionNumber) async {
     final actions = Actions();
 
-    const avaliableActions = [
+    const availableActions = [
       '1',
       '2',
       '3',
@@ -54,7 +54,7 @@ class ChooseActionCommand extends Command {
       '8',
     ];
 
-    if (avaliableActions.contains(actionNumber)) {
+    if (availableActions.contains(actionNumber)) {
       final receivedArray = _getArrayFromConsole();
 
       return ActionResult(
@@ -66,8 +66,7 @@ class ChooseActionCommand extends Command {
       );
     } else {
       return ActionResult(
-        message:
-            'Entered action is not allowed! Please, enter: <action --help> to get more information',
+        message: 'Entered action is not allowed! Please, enter: <action --help> to get more information',
       );
     }
   }
