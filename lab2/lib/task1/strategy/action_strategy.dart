@@ -6,11 +6,19 @@ abstract class ActionStrategy {
   List<double> execute(List<double> array);
 }
 
-class PositiveAverageStrategy implements ActionStrategy {
+abstract class BaseActionStrategy implements ActionStrategy {
   @override
   List<double> execute(List<double> array) {
     if (array.isEmpty) throw Exception('Empty array');
+    return performAction(array);
+  }
 
+  List<double> performAction(List<double> array);
+}
+
+class PositiveAverageStrategy extends BaseActionStrategy {
+  @override
+  List<double> performAction(List<double> array) {
     List<double> positiveNumbers = array.where((elem) => elem > 0).toList();
     if (positiveNumbers.isEmpty) {
       return array;
@@ -26,11 +34,9 @@ class PositiveAverageStrategy implements ActionStrategy {
   }
 }
 
-class MultiplyByMinValueStrategy implements ActionStrategy {
+class MultiplyByMinValueStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) throw Exception('Empty array');
-
+  List<double> performAction(List<double> array) {
     double minimalNumber = MathsUtils.min(array);
 
     final result = array
@@ -41,11 +47,9 @@ class MultiplyByMinValueStrategy implements ActionStrategy {
   }
 }
 
-class TripleDivisibleAverageStrategy implements ActionStrategy {
+class TripleDivisibleAverageStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) throw Exception('Empty array');
-
+  List<double> performAction(List<double> array) {
     List<double> evenNumbers = array.where((elem) => elem % 2 == 0).toList();
 
     double averageNumber = 0;
@@ -64,11 +68,9 @@ class TripleDivisibleAverageStrategy implements ActionStrategy {
   }
 }
 
-class DivisionByMaxHalfStrategy implements ActionStrategy {
+class DivisionByMaxHalfStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) throw Exception('Empty array');
-
+  List<double> performAction(List<double> array) {
     double halfOfMaximalNumber = (MathsUtils.max(array)) / 2;
 
     final result = array
@@ -81,11 +83,9 @@ class DivisionByMaxHalfStrategy implements ActionStrategy {
   }
 }
 
-class MultiplyByMinMaxStrategy implements ActionStrategy {
+class MultiplyByMinMaxStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) throw Exception('Empty array');
-
+  List<double> performAction(List<double> array) {
     double minimalValue = MathsUtils.min(array);
     double maximalValue = MathsUtils.max(array);
 
@@ -100,11 +100,9 @@ class MultiplyByMinMaxStrategy implements ActionStrategy {
   }
 }
 
-class MultiplyMaxDivMinStrategy implements ActionStrategy {
+class MultiplyMaxDivMinStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) throw Exception('Empty array');
-
+  List<double> performAction(List<double> array) {
     double minimalValue = MathsUtils.min(array);
     double maximalValue = MathsUtils.max(array);
 
@@ -119,10 +117,9 @@ class MultiplyMaxDivMinStrategy implements ActionStrategy {
   }
 }
 
-class SumOfThreeMinValuesStrategy implements ActionStrategy {
+class SumOfThreeMinValuesStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) throw Exception('Empty array');
+  List<double> performAction(List<double> array) {
     if (array.length < 3) throw Exception('Not enough elements');
 
     List<double> sortedArray = array.sorted((a, b) => a.compareTo(b));
@@ -137,27 +134,20 @@ class SumOfThreeMinValuesStrategy implements ActionStrategy {
   }
 }
 
-class EvenMultiplyOddReduceStrategy implements ActionStrategy {
+class EvenMultiplyOddReduceStrategy extends BaseActionStrategy {
   @override
-  List<double> execute(List<double> array) {
-    if (array.isEmpty) {
-      throw Exception('Empty array');
-    }
-
+  List<double> performAction(List<double> array) {
     List<double> positiveNumbers = array.where((elem) => elem > 0).toList();
-    double? sumOfPositiveNumbers = positiveNumbers.isNotEmpty
+    double sumToSubtract = positiveNumbers.isNotEmpty
         ? positiveNumbers.reduce((a, b) => a + b)
-        : null;
+        : 0;
 
     return array.asMap().entries.map((entry) {
-      int i = entry.key;
+      int element = entry.key;
       double value = entry.value;
 
-      if (sumOfPositiveNumbers != null) {
-        return i.isEven ? value * 2 : value - sumOfPositiveNumbers;
-      } else {
-        return i.isEven ? value * 2 : value;
-      }
+      double modifiedValue = element.isEven ? value * 2 : value;
+      return element.isEven ? modifiedValue : modifiedValue - sumToSubtract;
     }).toList();
   }
 }

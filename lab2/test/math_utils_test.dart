@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/maths_utils.dart';
 
 void main() {
-  group('Positive tests', () {
+  group('Testing maths utils functions', () {
     test('If array is not empty, get minimal value of array', () {
       List<double> listOfDouble = [12, 3, 0.1, 123, 3, 12];
 

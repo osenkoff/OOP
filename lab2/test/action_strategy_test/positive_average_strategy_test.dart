@@ -3,13 +3,14 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
-  group('Given array that includes one element', () {
+  group('Has an array which includes one element', () {
+
+    var positiveAverageStrategy = PositiveAverageStrategy();
+
     test(
         'If array has one positive number, '
         'return updated array that added for every element average '
         'of positive elements', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithPositiveNumber = [1.5];
       List<double> expectedAnswer = [3.0];
 
@@ -20,8 +21,6 @@ void main() {
     });
 
     test('If array has one negative number, return original array', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithNegativeNumber = [-1.5];
       List<double> expectedAnswer = [-1.5];
 
@@ -32,8 +31,6 @@ void main() {
     });
 
     test('If array has one zero, return zero', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithZero = [0];
       List<double> expectedAnswer = [0];
 
@@ -44,13 +41,14 @@ void main() {
     });
   });
 
-  group('Given array that includes more than one element', () {
+  group('Has an array which includes more than one element', () {
+
+    var positiveAverageStrategy = PositiveAverageStrategy();
+
     test(
         'If array has two positive numbers, '
         'return updated array that added '
         'for every element average of positive elements', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithPositiveNumbers = [2, 4];
       List<double> expectedAnswer = [5, 7];
 
@@ -61,8 +59,6 @@ void main() {
     });
 
     test('If array has two negative numbers, return original array', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithNegativeNumbers = [-1.5, -3];
       List<double> expectedAnswer = [-1.5, -3];
 
@@ -75,8 +71,6 @@ void main() {
     test(
         'If array has two different number, return updated array '
         'that added for every element average of positive elements', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithDifferentNumbers = [-1.5, 3];
       List<double> expectedAnswer = [1.5, 6];
 
@@ -87,8 +81,6 @@ void main() {
     });
 
     test('If array has plenty of negative numbers, return original array', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
-
       List<double> arrayWithNegativeNumbers = [
         -1.5,
         -3,
@@ -111,9 +103,11 @@ void main() {
     });
   });
 
-  group('Negative tests', () {
+  group('Has an array with wrong data', () {
+
+    var positiveAverageStrategy = PositiveAverageStrategy();
+
     test('If array is empty, return exception', () {
-      var positiveAverageStrategy = PositiveAverageStrategy();
       List<double> emptyList = [];
 
       expect(

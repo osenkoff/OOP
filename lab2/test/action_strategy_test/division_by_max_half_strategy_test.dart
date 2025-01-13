@@ -3,12 +3,12 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
-  group('Given array than includes one element', () {
+  group('Has an array which includes one element', () {
+    var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
+
     test(
         'If array has one positive element, '
         'return updated array that divided by half of max element', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithPositiveNumber = [6];
       List<double> expectedAnswer = [2];
 
@@ -21,8 +21,6 @@ void main() {
     test(
         'If array has one negative element, '
         'return updated array that divided by half of max element', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithNegativeNumber = [-4];
       List<double> expectedAnswer = [2];
 
@@ -33,8 +31,6 @@ void main() {
     });
 
     test('If array has zero, return zero', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithZero = [0];
       List<double> expectedAnswer = [0];
 
@@ -42,12 +38,12 @@ void main() {
     });
   });
 
-  group('Given array that includes more than one element', () {
+  group('Has an array which includes more than one element', () {
+    var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
+
     test(
         'If array has two positive elements, '
         'return updated array, that divided by half of max element', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithTwoPositiveElements = [4, 64];
       List<double> expectedAnswer = [0.125, 2];
 
@@ -60,8 +56,6 @@ void main() {
     test(
         'If array has two negative elements, '
         'return updated array, that divided by half of max element', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithTwoNegativeElements = [-4, -64];
       List<double> expectedAnswer = [2, 32];
 
@@ -74,8 +68,6 @@ void main() {
     test(
         'If array has two different elements, '
         'return updated array, that divided by half of max element', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithTwoDifferentElements = [-4, 32];
       List<double> expectedAnswer = [-0.25, 2];
 
@@ -89,8 +81,6 @@ void main() {
         'If array has plenty of different numbers, '
         'return updated array, that divided by half of max element and '
         'truncated by 3 decimal elements', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
       List<double> listWithDifferentElements = [2, -8, 0, -16, 64, -64];
       List<double> expectedAnswer = [0.062, -0.25, 0, -0.5, 2, -2];
 
@@ -101,9 +91,10 @@ void main() {
     });
   });
 
-  group('Negative tests', () {
+  group('Has an array with wrong data', () {
+    var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
+
     test('If array is empty, return exception', () {
-      var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
       List<double> emptyList = [];
 
       expect(

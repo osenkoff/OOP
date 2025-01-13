@@ -3,10 +3,11 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
-  group('Given array that includes one element', () {
-    test('If array has one positive element, return original array', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
+  group('Has an array which includes one element', () {
 
+    var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
+
+    test('If array has one positive element, return original array', () {
       List<double> listWithPositiveElement = [5];
       List<double> expectedAnswer = [5];
 
@@ -19,8 +20,6 @@ void main() {
     test(
         'If array has one negative element, return updated array '
         'that all negative elements multiplied by min and max values', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
       List<double> listWithNegativeElement = [-5];
       List<double> expectedAnswer = [-125];
 
@@ -31,8 +30,6 @@ void main() {
     });
 
     test('If array has only zero, return zero', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
       List<double> listWithZero = [0];
       List<double> expectedAnswer = [0];
 
@@ -43,10 +40,11 @@ void main() {
     });
   });
 
-  group('Given array that includes more than one element', () {
-    test('If array has two positive elements, return original array', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
+  group('Has an array which includes more than one element', () {
 
+    var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
+
+    test('If array has two positive elements, return original array', () {
       List<double> listWithPositiveElements = [5, 25];
       List<double> expectedAnswer = [5, 25];
 
@@ -59,8 +57,6 @@ void main() {
     test(
         'If array has two negative elements, return updated array '
         'that all negative elements multiplied by min and max elements', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
       List<double> listWithNegativeElements = [-5, -25];
       List<double> expectedAnswer = [-625, -3125];
 
@@ -73,8 +69,6 @@ void main() {
     test(
         'If array has different elements, return updated array '
         'that all negative elements multiplied by min and max elements', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
       List<double> listWithDifferentElements = [-2, 8, -8, 0, 4, 5];
       List<double> expectedAnswer = [128, 8, 512, 0, 4, 5];
 
@@ -85,9 +79,11 @@ void main() {
     });
   });
 
-  group('Negative tests', () {
+  group('Has an array with wrong data', () {
+
+    var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
+
     test('If array is empty, return exception', () {
-      var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
       List<double> emptyList = [];
 
       expect(
