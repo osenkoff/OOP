@@ -3,10 +3,9 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
+  var multiplyByMinValueStrategy = MultiplyByMinValueStrategy();
+
   group('Has an array which includes one element', () {
-
-    var multiplyByMinValueStrategy = MultiplyByMinValueStrategy();
-
     test(
         'If array has one positive element, '
         'return updated array, multiplied by exist value', () {
@@ -45,9 +44,6 @@ void main() {
   });
 
   group('Has an array which includes more than one element', () {
-
-    var multiplyByMinValueStrategy = MultiplyByMinValueStrategy();
-
     test(
         'If array has two positive elements, '
         'return updated array, multiplied by lowest value', () {
@@ -89,9 +85,6 @@ void main() {
   });
 
   group('Has an array with wrong data', () {
-
-    var multiplyByMinValueStrategy = MultiplyByMinValueStrategy();
-
     test('If array is empty, return exception', () {
       List<double> emptyList = [];
 

@@ -3,9 +3,9 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
-  group('Has an array which includes one element', () {
-    var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
+  var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
 
+  group('Has an array which includes one element', () {
     test(
         'If array has one positive element, '
         'return updated array that divided by half of max element', () {
@@ -39,8 +39,6 @@ void main() {
   });
 
   group('Has an array which includes more than one element', () {
-    var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
     test(
         'If array has two positive elements, '
         'return updated array, that divided by half of max element', () {
@@ -92,8 +90,6 @@ void main() {
   });
 
   group('Has an array with wrong data', () {
-    var divisionByMaxHalfStrategy = DivisionByMaxHalfStrategy();
-
     test('If array is empty, return exception', () {
       List<double> emptyList = [];
 

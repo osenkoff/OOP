@@ -3,10 +3,10 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
-  group('Has an array which includes only three elements', () {
 
-    var sumOfThreeMinValuesStrategy = SumOfThreeMinValuesStrategy();
-    
+  var sumOfThreeMinValuesStrategy = SumOfThreeMinValuesStrategy();
+
+  group('Has an array which includes only three elements', () {
     test(
         'If array has three positive elements, return updated array '
         'that add the amount of three lowest elements', () {
@@ -55,9 +55,6 @@ void main() {
   });
 
   group('Has an array which includes different amount of elements', () {
-
-    var sumOfThreeMinValuesStrategy = SumOfThreeMinValuesStrategy();
-
     test(
         'If array has different amount of elements, return updated array '
         'that add the amount of three lowest elements', () {

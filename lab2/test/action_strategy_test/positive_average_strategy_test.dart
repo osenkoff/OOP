@@ -3,10 +3,9 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
+  var positiveAverageStrategy = PositiveAverageStrategy();
+
   group('Has an array which includes one element', () {
-
-    var positiveAverageStrategy = PositiveAverageStrategy();
-
     test(
         'If array has one positive number, '
         'return updated array that added for every element average '
@@ -42,9 +41,6 @@ void main() {
   });
 
   group('Has an array which includes more than one element', () {
-
-    var positiveAverageStrategy = PositiveAverageStrategy();
-
     test(
         'If array has two positive numbers, '
         'return updated array that added '
@@ -104,9 +100,6 @@ void main() {
   });
 
   group('Has an array with wrong data', () {
-
-    var positiveAverageStrategy = PositiveAverageStrategy();
-
     test('If array is empty, return exception', () {
       List<double> emptyList = [];
 

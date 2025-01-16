@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:meta/meta.dart';
 
 import 'maths_utils.dart';
 
@@ -13,6 +14,7 @@ abstract class BaseActionStrategy implements ActionStrategy {
     return performAction(array);
   }
 
+  @protected
   List<double> performAction(List<double> array);
 }
 

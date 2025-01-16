@@ -3,10 +3,9 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
+  var evenMultiplyOddReduceStrategy = EvenMultiplyOddReduceStrategy();
+
   group('Has an array which includes only one odd element', () {
-
-    var evenMultiplyOddReduceStrategy = EvenMultiplyOddReduceStrategy();
-
     test(
         'If array has one positive element, '
         'return updated array that all even elements multiplied by 2', () {
@@ -43,9 +42,6 @@ void main() {
   });
 
   group('Has an array which includes one odd and one even elements', () {
-
-    var evenMultiplyOddReduceStrategy = EvenMultiplyOddReduceStrategy();
-
     test(
         'If array has positives odd and even elements, '
         'return updated array that even elements are multiplied by 2, '
@@ -97,9 +93,6 @@ void main() {
   });
 
   group('Has an array which includes plenty of different elements', () {
-
-    var evenMultiplyOddReduceStrategy = EvenMultiplyOddReduceStrategy();
-
     test(
         'If array has different elements, '
         'return updated array that even elements are multiplied by 2, '
@@ -115,9 +108,6 @@ void main() {
   });
 
   group('Has an array with wrong data', () {
-
-    var evenMultiplyOddReduceStrategy = EvenMultiplyOddReduceStrategy();
-
     test('If array is empty, return exception', () {
       List<double> emptyList = [];
 

@@ -3,10 +3,10 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
+  var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
+
+
   group('Has an array which includes one element', () {
-
-    var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
     test('If array has one positive element, return original array', () {
       List<double> listWithPositiveElement = [5];
       List<double> expectedAnswer = [5];
@@ -41,9 +41,6 @@ void main() {
   });
 
   group('Has an array which includes more than one element', () {
-
-    var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
     test('If array has two positive elements, return original array', () {
       List<double> listWithPositiveElements = [5, 25];
       List<double> expectedAnswer = [5, 25];
@@ -80,9 +77,6 @@ void main() {
   });
 
   group('Has an array with wrong data', () {
-
-    var multiplyByMinMaxStrategy = MultiplyByMinMaxStrategy();
-
     test('If array is empty, return exception', () {
       List<double> emptyList = [];
 

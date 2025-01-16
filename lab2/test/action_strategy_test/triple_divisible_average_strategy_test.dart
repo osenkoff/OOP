@@ -3,10 +3,9 @@ import 'package:test/test.dart';
 import 'package:lab2/task1/strategy/action_strategy.dart';
 
 void main() {
+  var tripleDivisibleAverageStrategy = TripleDivisibleAverageStrategy();
+
   group('Has an array which includes one element', () {
-
-    var tripleDivisibleAverageStrategy = TripleDivisibleAverageStrategy();
-
     test(
         'If array has one positive element '
         'that divided only by 2, return original array', () {
@@ -68,8 +67,6 @@ void main() {
 
   group('Has an array which includes more than one element', () {
 
-    var tripleDivisibleAverageStrategy = TripleDivisibleAverageStrategy();
-
     test(
         'If array has positive and negative elements '
         'that divided only by 3, return original array', () {
@@ -109,9 +106,6 @@ void main() {
   });
 
   group('Negative tests', () {
-
-    var tripleDivisibleAverageStrategy = TripleDivisibleAverageStrategy();
-
     test('If array is empty, return exception', () {
       List<double> emptyList = [];
 
