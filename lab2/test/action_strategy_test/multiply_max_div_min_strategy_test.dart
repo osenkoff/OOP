@@ -43,9 +43,6 @@ void main() {
   });
 
   group('Has an array which includes more than one item', () {
-
-    // var multiplyMaxDivMinStrategy = MultiplyMaxDivMinStrategy();
-
     test(
         'If array has two positive elements, return updated array '
         'that multiplied by max and divided by min elements', () {
