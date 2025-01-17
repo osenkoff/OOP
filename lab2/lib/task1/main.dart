@@ -9,6 +9,6 @@ void main(List<String> args) async {
   try {
     await runner.run(args);
   } catch (e) {
-    print('Error: ${e.toString()}');
+    print(e);
   }
 }
