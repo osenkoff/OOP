@@ -83,13 +83,12 @@ class StringUtils {
     };
 
     for (var i = 0; i < text.length; i++) {
-      final symbol = text[i];
+      final textSymbol = text[i];
+      final finalSymbol = htmlSymbols.containsKey(textSymbol)
+          ? htmlSymbols[textSymbol]
+          : textSymbol;
 
-      if (htmlSymbols.containsKey(symbol)) {
-        result.write(htmlSymbols[symbol]!);
-        continue;
-      }
-      result.write(symbol);
+      result.write(finalSymbol);
     }
 
     return result;
@@ -107,17 +106,17 @@ class StringUtils {
       '&amp;': '&'
     };
 
-    bool isEntity = false;
+    bool isSpecialSymbol = false;
 
-    for (int i = 0; i < html.length; i++) {
+    for (int i = 0; i < html.length; ++i) {
       final symbol = html[i];
 
       if (symbol == '&') {
-        isEntity = true;
+        isSpecialSymbol = true;
       }
 
-      if (isEntity) {
-        if (symbol == ';' && isEntity) {
+      if (isSpecialSymbol) {
+        if (symbol == ';' && isSpecialSymbol) {
           tempString.write(symbol);
           String htmlCode = tempString.toString();
 
@@ -127,7 +126,7 @@ class StringUtils {
             htmlCode = '';
           }
 
-          isEntity = false;
+          isSpecialSymbol = false;
           continue;
         }
         tempString.write(symbol);
