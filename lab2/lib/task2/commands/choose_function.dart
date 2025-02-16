@@ -14,6 +14,8 @@ class ChooseFunctionCommand extends Command {
     addSubcommand(FindAndReplaceCommand());
     addSubcommand(TrimBlanksCommand());
     addSubcommand(RemoveExtraSpacesCommand());
+    addSubcommand(HtmlEncodeCommand());
+    addSubcommand(HtmlDecodeCommand());
   }
 }
 
@@ -32,6 +34,7 @@ class TrimBlanksCommand extends Command {
 
     if (input.isEmpty) {
       print('Invalid input.');
+      return;
     }
 
     final result = stringUtils.trimBlanks(input);
@@ -85,6 +88,52 @@ class FindAndReplaceCommand extends Command {
     }
 
     final result = stringUtils.findAndReplace(input, search, replace);
+    print('Result: $result');
+  }
+}
+
+class HtmlEncodeCommand extends Command {
+  @override
+  final name = 'html_encode';
+  @override
+  final description = 'Encoding all HTML symbols';
+
+  @override
+  void run() {
+    final stringUtils = StringUtils();
+
+    print('Enter your sentence:');
+    String input = stdin.readLineSync()!;
+
+    if (input.isEmpty) {
+      print('Invalid input.');
+      return;
+    }
+
+    final result = stringUtils.htmlEncode(input);
+    print('Result: $result');
+  }
+}
+
+class HtmlDecodeCommand extends Command {
+  @override
+  final name = 'html_decode';
+  @override
+  final description = 'Decoding all HTML codes';
+
+  @override
+  void run() {
+    final stringUtils = StringUtils();
+
+    print('Enter your sentence:');
+    String input = stdin.readLineSync()!;
+
+    if (input.isEmpty) {
+      print('Invalid input.');
+      return;
+    }
+
+    final result = stringUtils.htmlDecode(input);
     print('Result: $result');
   }
 }
