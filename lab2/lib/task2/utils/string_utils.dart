@@ -6,7 +6,7 @@ class StringUtils {
     String resultString = '';
     String spaceHolder = '';
 
-    for (var i = 0; i < str.length; i++) {
+    for (var i = 0; i < str.length; ++i) {
       String symbol = str[i];
 
       if (spaceSymbols.contains(symbol)) {
@@ -34,7 +34,7 @@ class StringUtils {
     String resultString = '';
     bool isSpace = false;
 
-    for (int i = 0; i < arg.length; i++) {
+    for (int i = 0; i < arg.length; ++i) {
       final symbol = arg[i];
 
       if (!spaceSymbols.contains(symbol)) {
@@ -56,7 +56,9 @@ class StringUtils {
   String findAndReplace(String subject, String search, String replace) {
     String result = '';
 
-    for (var i = 0; i < subject.length; i++) {
+    if (!subject.contains(search)) throw Exception('Do not found search word');
+
+    for (var i = 0; i < subject.length; ++i) {
       final symbol = subject[i];
 
       if (i + search.length <= subject.length &&
@@ -82,7 +84,7 @@ class StringUtils {
       '&': '&amp;'
     };
 
-    for (var i = 0; i < text.length; i++) {
+    for (var i = 0; i < text.length; ++i) {
       final textSymbol = text[i];
       final finalSymbol = htmlSymbols.containsKey(textSymbol)
           ? htmlSymbols[textSymbol]
@@ -97,6 +99,7 @@ class StringUtils {
   StringBuffer htmlDecode(String html) {
     StringBuffer result = StringBuffer();
     StringBuffer tempString = StringBuffer();
+    Set<String> unknownHtmlCodes = {};
 
     Map<String, String> htmlSymbols = {
       '&quot;': '"',
@@ -116,26 +119,29 @@ class StringUtils {
       }
 
       if (isSpecialSymbol) {
-        if (symbol == ';' && isSpecialSymbol) {
-          tempString.write(symbol);
+        tempString.write(symbol);
+        if (symbol == ';') {
           String htmlCode = tempString.toString();
 
           if (htmlSymbols.containsKey(htmlCode)) {
             result.write(htmlSymbols[htmlCode]);
-            tempString.clear();
-            htmlCode = '';
+          } else {
+            unknownHtmlCodes.add(htmlCode);
+            result.write(htmlCode);
           }
-
+          tempString.clear();
           isSpecialSymbol = false;
           continue;
         }
-        tempString.write(symbol);
         continue;
       }
 
       result.write(symbol);
     }
 
+    if (unknownHtmlCodes.isNotEmpty) throw Exception("Неизвестные HTML-коды: $unknownHtmlCodes");
+
     return result;
   }
+
 }

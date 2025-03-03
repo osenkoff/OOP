@@ -32,10 +32,7 @@ class TrimBlanksCommand extends Command {
     print('Enter your sentence:');
     String input = stdin.readLineSync()!;
 
-    if (input.isEmpty) {
-      print('Invalid input.');
-      return;
-    }
+    if (input.isEmpty) throw Exception('Invalid input.');
 
     final result = stringUtils.trimBlanks(input);
     print('Result: $result');
@@ -55,10 +52,7 @@ class RemoveExtraSpacesCommand extends Command {
     print('Enter your sentence:');
     String input = stdin.readLineSync()!;
 
-    if (input.isEmpty) {
-      print('Invalid input.');
-      return;
-    }
+    if (input.isEmpty) throw Exception('Invalid input.');
 
     final result = stringUtils.removeExtraSpaces(input);
     print('Result: $result');
@@ -77,15 +71,15 @@ class FindAndReplaceCommand extends Command {
 
     print('Enter your sentence:');
     String input = stdin.readLineSync()!;
+    if (input.isEmpty) throw Exception('Invalid input string');
+
     print('Enter the word to search for:');
     String search = stdin.readLineSync()!;
+    if (search.isEmpty) throw Exception('Invalid word to search');
+
     print('Enter the word to replace with:');
     String replace = stdin.readLineSync()!;
-
-    if (input.isEmpty || search.isEmpty || replace.isEmpty) {
-      print('Invalid input.');
-      return;
-    }
+    if (replace.isEmpty) throw Exception('Invalid word to replace');
 
     final result = stringUtils.findAndReplace(input, search, replace);
     print('Result: $result');
@@ -105,10 +99,7 @@ class HtmlEncodeCommand extends Command {
     print('Enter your sentence:');
     String input = stdin.readLineSync()!;
 
-    if (input.isEmpty) {
-      print('Invalid input.');
-      return;
-    }
+    if (input.isEmpty) throw Exception('Invalid input.');
 
     final result = stringUtils.htmlEncode(input);
     print('Result: $result');
@@ -128,10 +119,7 @@ class HtmlDecodeCommand extends Command {
     print('Enter your sentence:');
     String input = stdin.readLineSync()!;
 
-    if (input.isEmpty) {
-      print('Invalid input.');
-      return;
-    }
+    if (input.isEmpty) throw Exception('Invalid input.');
 
     final result = stringUtils.htmlDecode(input);
     print('Result: $result');
