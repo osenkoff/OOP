@@ -1,78 +1,88 @@
 import 'package:lab3/television/models/tv_options.dart';
 
+import '../models/tv_response.dart';
+
 class TvUtils {
   static const String turnOn = 'TurnOn';
   static const String turnOff = 'TurnOff';
   static const String selectChannel = 'SelectChannel';
+  static const String selectPreviousChannel = 'SelectPreviousChannel';
   static const String info = 'Info';
 
-  final List<String> channels = List.generate(99, (index) => (index + 1).toString());
+  final List<String> channels =
+      List.generate(99, (index) => (index + 1).toString());
+
+  String previousChannel = '';
+  String currentChannel = '1';
+  List<String> previousChannels = [];
 
   bool isTurnOn = false;
-  String currentChannel = '1';
   List<String> actionSequence = [];
 
   String getTvStatus(String action) {
     if (action == turnOn && !isTurnOn) {
       isTurnOn = true;
-      return _addAction('TV is turned on');
+      return 'TV is turned on';
     }
 
     if (action == turnOff && isTurnOn) {
       isTurnOn = false;
-      return _addAction('TV is turned off');
+      return 'TV is turned off';
     }
-    
+
     if (action == info) {
-      if (isTurnOn) {
-        return _addAction('TV is turned on\nChannel is: $currentChannel');
-      }
-
-      return _addAction('TV is turned off');
+      return isTurnOn
+          ? 'TV is turned on\nChannel is: $currentChannel'
+          : 'TV is turned off';
     }
 
-    return _addAction('ERROR');
+    return 'ERROR';
   }
 
   String getTvChannel(String action) {
-    String receivedChannel = action.split(' ')[1];
+    if (isTurnOn && action == selectPreviousChannel) {
+      if (previousChannels.isNotEmpty) {
+        currentChannel = previousChannel;
+        previousChannel = previousChannels.removeLast();
+        return 'Switched to previous channel: $currentChannel';
+      }
 
-    if (isTurnOn && channels.contains(receivedChannel)) {
-      currentChannel = receivedChannel;
-      return _addAction('Channel switched to: $currentChannel');
+      return 'ERROR';
     }
 
-    _addAction('ERROR');
-    return currentChannel;
+    if (action.startsWith(selectChannel)) {
+      String receivedChannel = action.split(' ')[1];
+
+      if (isTurnOn && channels.contains(receivedChannel)) {
+        previousChannels.add(currentChannel);
+
+        previousChannel = currentChannel;
+        currentChannel = receivedChannel;
+        return 'Channel switched to: $currentChannel';
+      }
+    }
+
+    return 'ERROR';
   }
 
-  TvOptions setTvOptions(List<String> actionsList) {
-    String? status;
-    String channel = currentChannel;
+  TvResponse getTvResponse(List<String> actionsList) {
+    List<TvOptions> responses = [];
 
     for (var action in actionsList) {
+      String status = 'ERROR';
+      String channel = currentChannel;
+
       if ({turnOn, turnOff, info}.contains(action)) {
         status = getTvStatus(action);
-        continue;
+      } else if (action.startsWith(selectChannel) ||
+          action == selectPreviousChannel) {
+        status = getTvChannel(action);
+        channel = currentChannel;
       }
 
-      if (action.startsWith('SelectChannel')) {
-        channel = getTvChannel(action);
-        continue;
-      }
-
-      actionSequence.add('ERROR');
+      responses.add(TvOptions(status: status, channel: channel));
     }
 
-    return TvOptions(
-      status: status,
-      channel: channel,
-      actionSequence: actionSequence,
-    );
-  }
-
-  String _addAction(String status) {
-    actionSequence.add(status);
-    return status;
+    return TvResponse(responses: responses);
   }
 }

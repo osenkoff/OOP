@@ -13,10 +13,10 @@ class TvParametersCommand extends Command {
   @override
   void run() {
     final actionsList = getActionsFromConsole();
-    final resultSequence = TvUtils().setTvOptions(actionsList).actionSequence;
+    final resultSequence = TvUtils().getTvResponse(actionsList).responses;
 
-    for (var result in resultSequence!) {
-      print(result);
+    for (var result in resultSequence) {
+      print(result.status);
     }
   }
 
