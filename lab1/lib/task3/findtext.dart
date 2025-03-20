@@ -1,5 +1,5 @@
 class FindText {
-  List<int> getMatchedStrings({
+  String getMatchedStrings({
     required List<String> fileContent,
     required String searchString,
   }) {
@@ -21,6 +21,6 @@ class FindText {
         matchingStrings.add(line + 1);
       }
     }
-    return matchingStrings;
+    return matchingStrings.join(' ');
   }
 }

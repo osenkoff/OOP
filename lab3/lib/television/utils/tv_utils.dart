@@ -12,12 +12,11 @@ class TvUtils {
   final List<String> channels =
       List.generate(99, (index) => (index + 1).toString());
 
-  String previousChannel = '';
+  late String previousChannel;
   String currentChannel = '1';
   List<String> previousChannels = [];
 
   bool isTurnOn = false;
-  List<String> actionSequence = [];
 
   String getTvStatus(String action) {
     if (action == turnOn && !isTurnOn) {
@@ -69,7 +68,7 @@ class TvUtils {
     List<TvOptions> responses = [];
 
     for (var action in actionsList) {
-      String status = 'ERROR';
+      late String status;
       String channel = currentChannel;
 
       if ({turnOn, turnOff, info}.contains(action)) {
@@ -80,7 +79,10 @@ class TvUtils {
         channel = currentChannel;
       }
 
-      responses.add(TvOptions(status: status, channel: channel));
+      responses.add(TvOptions(
+        status: status,
+        channel: channel,
+      ));
     }
 
     return TvResponse(responses: responses);

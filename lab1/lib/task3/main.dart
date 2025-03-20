@@ -1,14 +1,20 @@
 import 'package:file/local.dart';
+
 import 'findtext.dart';
 
-void main(List<String> arguments) async {
+void main(List<String> arguments) {
   final localFileSystem = LocalFileSystem();
   final findText = FindText();
 
   final filename = localFileSystem.file(arguments[0]);
+  if (!filename.existsSync()) {
+    print('File does not exist');
+    return;
+  }
+
   String searchString = arguments[1];
 
-  var fileContent = await filename.readAsLines();
+  var fileContent = filename.readAsLinesSync();
 
   final matchStrings = findText.getMatchedStrings(
     fileContent: fileContent,
@@ -17,7 +23,7 @@ void main(List<String> arguments) async {
 
   try {
     if (matchStrings.isNotEmpty) {
-      matchStrings.forEach(print);
+      print(matchStrings);
     } else {
       print("Text not found");
     }
