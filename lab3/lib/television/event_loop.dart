@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'actions/tv_action.dart';
-import 'controller.dart';
+import 'tv_controller.dart';
 
 class EventLoop {
   late final TvAction tvAction;
 
-  EventLoop(Controller controller) {
+  EventLoop(TvController controller) {
     tvAction = TvAction(controller);
   }
 
@@ -21,22 +21,45 @@ class EventLoop {
   }
 
   List<String> _parseActionList(String line) {
-    final receivedAction = line.split(' ');
-    if (receivedAction.length < 2) return receivedAction;
+    final regex = RegExp(r'"(.*?)"|(\S+)');
+    final matches = regex.allMatches(line);
+    final parts = matches.map((m) => m.group(1) ?? m.group(2)!).toList();
 
-    const multiArgCommands = {
-      'SetChannelName',
-      'GetChannelByName',
-      'DeleteChannelName',
-      'SelectChannel',
+    if (parts.isEmpty) return [];
+
+    const commandArgs = {
+      'SetChannelName': 2,
+      'GetChannelByName': 1,
+      'DeleteChannelName': 1,
+      'SelectChannel': 1,
     };
 
-    final command = receivedAction[0];
-    if (!multiArgCommands.contains(command)) return receivedAction;
+    final command = parts[0];
+    final expectedArgs = commandArgs[command] ?? 0;
 
-    final firstArg = receivedAction[1];
-    final secondArg = receivedAction.sublist(2).join(' ');
-    return [command, firstArg, secondArg];
+    if (expectedArgs == 0) return parts;
+
+    final args = parts.sublist(1);
+    if (args.length < expectedArgs) {
+      throw FormatException('Недостаточно аргументов для команды $command');
+    }
+
+    switch (expectedArgs) {
+      case 1:
+        return [command, args.join(' ')];
+      case 2:
+        return [command, args[0], args.sublist(1).join(' ')];
+      default:
+        return parts;
+    }
+  }
+
+  void _executeCommand(String commandName, dynamic firstValue, dynamic secondValue) {
+    try {
+      tvAction.executeCommand(commandName, firstValue, secondValue);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void run() {
@@ -48,7 +71,7 @@ class EventLoop {
         dynamic firstValue = commands.length > 1 ? _parseValue(commands[1]) : null;
         dynamic secondValue = commands.length > 2 ? _parseValue(commands[2]) : null;
 
-        tvAction.executeCommand(commandName, firstValue, secondValue);
+        _executeCommand(commandName, firstValue, secondValue);
       } catch (e) {
         print(e.toString());
       }
@@ -58,8 +81,8 @@ class EventLoop {
   static dynamic _parseValue(String value) {
     if (int.tryParse(value) != null) {
       return int.parse(value);
-    } else if (double.tryParse(value) != null) {
-      return double.parse(value);
+    } else if (int.tryParse(value) != null) {
+      return int.parse(value);
     } else {
       return value;
     }

@@ -1,37 +1,37 @@
 import 'package:lab3/television/actions/tv_command.dart';
 
-import '../controller.dart';
+import '../tv_controller.dart';
 
 class TvAction {
-  final Controller controller;
+  final TvController controller;
 
   TvAction(this.controller);
 
   void executeCommand(String action, dynamic firstValue, dynamic secondValue) {
-    Command? receivedAction = _createCommand(action, firstValue, secondValue);
+    Command? receivedAction = _parseCommand(action, firstValue, secondValue);
     if (receivedAction != null) {
       receivedAction.execute();
       return;
     }
 
-    throw new Exception("Unavailable action received");
+    throw new Exception('Unavailable action received');
   }
 
-  Command? _createCommand(String action, dynamic firstValue, dynamic secondValue) {
+  Command? _parseCommand(String action, dynamic firstValue, dynamic secondValue) {
     switch (action) {
-      case "TurnOn":
+      case 'TurnOn':
         return TurnOnCommand(controller);
-      case "TurnOff":
+      case 'TurnOff':
         return TurnOffCommand(controller);
-      case "SelectChannel":
+      case 'SelectChannel':
         return SelectChannelCommand(controller, firstValue);
-      case "SelectPreviousChannel":
+      case 'SelectPreviousChannel':
         return SelectPreviousChannelCommand(controller);
-      case "SetChannelName":
+      case 'SetChannelName':
         return SetChannelNameCommand(controller, firstValue as int, secondValue as String);
-      case "DeleteChannelName":
+      case 'DeleteChannelName':
         return DeleteChannelNameCommand(controller, firstValue as String);
-      case "GetChannelName":
+      case 'GetChannelName':
         return GetChannelNameCommand(controller, firstValue);
       case "GetChannelByName":
         return GetChannelByNameCommand(controller, firstValue as String);

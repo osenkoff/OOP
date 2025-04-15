@@ -1,99 +1,79 @@
 class Television {
-  bool isTurnOn = false;
-  int currentChannel = 1;
-  int? previousChannel;
-  Map<int, String> channelsList = {};
+  bool _isTurnOn = false;
+  int _currentChannel = 1;
+  int? _previousChannel;
+  Map<int, String> _channelsList = {};
 
-  final List<int> validChannels = List.generate(99, (index) => index + 1);
+  bool get isTurnOn => _isTurnOn;
+  int get currentChannel => _currentChannel;
+  int? get previousChannel => _previousChannel;
+  Map<int, String> get channelsList => _channelsList;
 
-  bool turnOnTelevision() {
-    if (isTurnOn) return false;
+  void turnOn() {
+    if (_isTurnOn) throw Exception('TV is already on');
 
-    isTurnOn = true;
-    return true;
+    _isTurnOn = true;
   }
 
-  bool turnOffTelevision() {
-    if (!isTurnOn) return false;
+  void turnOff() {
+    if (!_isTurnOn) throw Exception('TV is already off');
 
-    isTurnOn = false;
-    return true;
+    _isTurnOn = false;
   }
 
-  bool selectChannel(dynamic channel) {
-    if (!isTurnOn) return false;
+  void selectChannel(dynamic channel) {
+    if (!_isTurnOn) throw Exception('can not select a channel when TV is off');
 
     if (channel is int) {
-      if (!validChannels.contains(channel)) return false;
+      if (!isValidChannel(channel)) throw Exception('unavailable channel selected');
 
-      previousChannel = currentChannel;
-      currentChannel = channel;
+      _previousChannel = _currentChannel;
+      _currentChannel = channel;
     }
 
     if (channel is String) {
-      if (!channelsList.containsValue(channel)) return false;
+      if (!_channelsList.containsValue(channel)) throw Exception('unavailable channel selected');;
 
-      currentChannel = channelsList.keys
-          .firstWhere((key) => channelsList[key] == channel);
+      _currentChannel = _channelsList.keys
+          .firstWhere((key) => _channelsList[key] == channel);
     }
-
-    return true;
   }
 
-  bool isTelevisionTurnedOn() {
-    return isTurnOn;
+  void selectPreviousChannel() {
+    if (!_isTurnOn || _previousChannel == null) throw Exception('can not select a previous channel');
+
+    _currentChannel = _previousChannel!;
+    _previousChannel = null;
   }
 
-  int getChannel() {
-    return currentChannel;
+  void setChannelName(int channel, String channelName) {
+    if (!_isTurnOn || !isValidChannel(channel)) throw Exception('can not set channel name');
+
+    _channelsList[channel] = channelName;
   }
 
-  bool selectPreviousChannel() {
-    if (!isTurnOn || previousChannel == null) return false;
+  void deleteChannelName(String channelName) {
+    if (!_channelsList.containsValue(channelName)) throw Exception('channel does not exist name');
 
-    currentChannel = previousChannel!;
-    previousChannel = null;
-    return true;
-  }
-
-  int getPreviousChannel() {
-    return previousChannel!;
-  }
-
-  bool setChannelName(int channel, String channelName) {
-    if (!validChannels.contains(channel) || !isTurnOn) return false;
-
-    channelsList[channel] = channelName;
-    return true;
-  }
-
-  bool deleteChannelName(String channelName) {
-    if (!channelsList.containsValue(channelName)) return false;
-
-    channelsList
+    _channelsList
         .removeWhere((channel, channelName) => channelName == channelName);
-    return true;
   }
 
-  bool isChannelExist(int channel) {
-    if (!channelsList.containsKey(channel)) return false;
-
-    return true;
+  bool isValidChannel(int channel) {
+    return channel >= 1 && channel <= 99;
   }
 
   String? getChannelName(int channel) {
-    return channelsList[channel];
-  }
+    if (!_channelsList.containsKey(channel)) throw Exception('this channel does not have a name');
 
-  bool isChannelNameExist(String channelName) {
-    if (!channelsList.containsValue(channelName)) return false;
-
-    return true;
+    return _channelsList[channel];
   }
 
   int getChannelByName(String channelName) {
-    int channel = channelsList.keys
-        .firstWhere((key) => channelsList[key] == channelName);
+    if (!_channelsList.containsValue(channelName)) throw Exception('this channel does not have a name');
+
+    int channel = _channelsList.keys
+        .firstWhere((key) => _channelsList[key] == channelName);
 
     return channel;
   }

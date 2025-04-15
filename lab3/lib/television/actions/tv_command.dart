@@ -1,11 +1,11 @@
-import '../controller.dart';
+import '../tv_controller.dart';
 
 abstract class Command {
   void execute();
 }
 
 class TurnOnCommand implements Command {
-  final Controller controller;
+  final TvController controller;
 
   TurnOnCommand(this.controller);
 
@@ -16,7 +16,7 @@ class TurnOnCommand implements Command {
 }
 
 class TurnOffCommand implements Command {
-  final Controller controller;
+  final TvController controller;
 
   TurnOffCommand(this.controller);
 
@@ -27,7 +27,7 @@ class TurnOffCommand implements Command {
 }
 
 class SelectChannelCommand implements Command {
-  final Controller controller;
+  final TvController controller;
   final dynamic channel;
 
   SelectChannelCommand(this.controller, this.channel);
@@ -39,7 +39,7 @@ class SelectChannelCommand implements Command {
 }
 
 class SelectPreviousChannelCommand implements Command {
-  final Controller controller;
+  final TvController controller;
 
   SelectPreviousChannelCommand(this.controller);
 
@@ -50,7 +50,7 @@ class SelectPreviousChannelCommand implements Command {
 }
 
 class SetChannelNameCommand implements Command {
-  final Controller controller;
+  final TvController controller;
   final int channel;
   final String channelName;
 
@@ -63,7 +63,7 @@ class SetChannelNameCommand implements Command {
 }
 
 class DeleteChannelNameCommand implements Command {
-  final Controller controller;
+  final TvController controller;
   final String channelName;
 
   DeleteChannelNameCommand(this.controller, this.channelName);
@@ -75,7 +75,7 @@ class DeleteChannelNameCommand implements Command {
 }
 
 class GetChannelNameCommand implements Command {
-  final Controller controller;
+  final TvController controller;
   final int channel;
 
   GetChannelNameCommand(this.controller, this.channel);
@@ -87,7 +87,7 @@ class GetChannelNameCommand implements Command {
 }
 
 class GetChannelByNameCommand implements Command {
-  final Controller controller;
+  final TvController controller;
   final String channelName;
 
   GetChannelByNameCommand(this.controller, this.channelName);
@@ -99,7 +99,7 @@ class GetChannelByNameCommand implements Command {
 }
 
 class InfoCommand implements Command {
-  final Controller controller;
+  final TvController controller;
 
   InfoCommand(this.controller);
 
