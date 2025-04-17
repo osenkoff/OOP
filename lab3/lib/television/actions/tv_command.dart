@@ -28,7 +28,7 @@ class TurnOffCommand implements Command {
 
 class SelectChannelCommand implements Command {
   final TvController controller;
-  final dynamic channel;
+  final channel;
 
   SelectChannelCommand(this.controller, this.channel);
 

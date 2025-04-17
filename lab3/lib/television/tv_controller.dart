@@ -3,9 +3,7 @@ import 'television.dart';
 class TvController {
   late final Television television;
 
-  TvController(Television television) {
-    this.television = television;
-  }
+  TvController(this.television);
 
   String getInfo() {
     if (!television.isTurnOn) return 'TV is turned off';
@@ -40,7 +38,7 @@ class TvController {
     return message;
   }
 
-  String selectChannel(dynamic channel) {
+  String selectChannel(final channel) {
     String message = '';
 
     television.selectChannel(channel);

@@ -7,7 +7,7 @@ class TvAction {
 
   TvAction(this.controller);
 
-  void executeCommand(String action, dynamic firstValue, dynamic secondValue) {
+  void executeCommand(String action, final firstValue, final secondValue) {
     Command? receivedAction = _parseCommand(action, firstValue, secondValue);
     if (receivedAction != null) {
       receivedAction.execute();
@@ -17,7 +17,7 @@ class TvAction {
     throw new Exception('Unavailable action received');
   }
 
-  Command? _parseCommand(String action, dynamic firstValue, dynamic secondValue) {
+  Command? _parseCommand(String action, final firstValue, final secondValue) {
     switch (action) {
       case 'TurnOn':
         return TurnOnCommand(controller);

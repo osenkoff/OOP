@@ -8,6 +8,23 @@ void main() {
     television = Television();
   });
 
+  group('States initialization', () {
+    test('Checking initial states', () {
+      expect(television.isTurnOn, isFalse);
+      expect(television.currentChannel, 1);
+      expect(television.previousChannel, isNull);
+      expect(television.channelsList, isEmpty);
+    });
+
+    test('Checking initial states if TV is on', () {
+      television.turnOn();
+      expect(television.isTurnOn, isTrue);
+      expect(television.currentChannel, 1);
+      expect(television.previousChannel, isNull);
+      expect(television.channelsList, isEmpty);
+    });
+  });
+
   group('TV power manager', () {
     test('Turn on TV', () {
       television.turnOn();
@@ -20,12 +37,12 @@ void main() {
       expect(television.isTurnOn, isFalse);
     });
 
-    test('Throw exception when turning on already on TV', () {
+    test('Сan’t turn on the TV if it’s already on.', () {
       television.turnOn();
       expect(() => television.turnOn(), throwsException);
     });
 
-    test('Throw exception when turning off already off TV', () {
+    test('Can’t turn on the TV if it’s already off.', () {
       expect(() => television.turnOff(), throwsException);
     });
   });
@@ -35,23 +52,24 @@ void main() {
       television.turnOn();
     });
 
-    test('Select valid int channel', () {
+    test('Can select valid int channel', () {
       television.selectChannel(5);
       expect(television.currentChannel, 5);
     });
 
-    test('Select invalid int channel', () {
+    test('Can not select invalid int channel', () {
       expect(() => television.selectChannel(0), throwsException);
       expect(() => television.selectChannel(100), throwsException);
     });
 
-    test('Select channel by name', () {
+    test('Can select existing channel by name', () {
       television.setChannelName(7, 'Carousel');
+      expect(television.currentChannel, 1);
       television.selectChannel('Carousel');
       expect(television.currentChannel, 7);
     });
 
-    test('Throw exception when selecting non-existing channel name', () {
+    test('Can’t select non-existing channel', () {
       expect(() => television.selectChannel('Carousel'), throwsException);
     });
 
@@ -63,7 +81,7 @@ void main() {
       expect(television.previousChannel, isNull);
     });
 
-    test('Throw exception when selecting previous channel without history', () {
+    test('Сan’t switch to the previous channel', () {
       expect(() => television.selectPreviousChannel(), throwsException);
     });
   });
@@ -79,30 +97,32 @@ void main() {
     test('Set channel name', () {
       expect(television.channelsList[1], 'MTV');
       expect(television.channelsList[2], 'BBC');
+      expect(television.channelsList[7], 'National Geographic');
     });
 
-    test('Delete channel name', () {
+    test('Can delete existing channel name', () {
       television.deleteChannelName('MTV');
       expect(television.channelsList.containsKey(1), isFalse);
     });
 
-    test('Throw exception when deleting non-existing channel name', () {
+    test('Сan’t delete non-existing channel name', () {
       expect(() => television.deleteChannelName('CNN'), throwsException);
     });
 
-    test('Check valid channel', () {
-      expect(television.isValidChannel(1), isTrue);
-      expect(television.isValidChannel(100), isFalse);
-    });
-
-    test('Get channel name', () {
+    test('Can get channel name', () {
       expect(television.getChannelName(1), 'MTV');
-      expect(() => television.getChannelName(3), throwsException);
     });
 
-    test('Get channel by name', () {
+    test('Сan’t get non-existing channel name', () {
+      expect(() => television.getChannelName(4), throwsException);
+    });
+
+    test('Can get channel by name', () {
       expect(television.getChannelByName('BBC'), 2);
-      expect(() => television.getChannelByName('CNN'), throwsException);
+    });
+
+    test('Сan’t get non-existing channel by name', () {
+      expect(() => television.getChannelByName('TV100'), throwsException);
     });
 
     test('National Geographic channel scenario', () {

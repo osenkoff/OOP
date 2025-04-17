@@ -21,9 +21,7 @@ class EventLoop {
   }
 
   List<String> _parseActionList(String line) {
-    final regex = RegExp(r'"(.*?)"|(\S+)');
-    final matches = regex.allMatches(line);
-    final parts = matches.map((m) => m.group(1) ?? m.group(2)!).toList();
+    final parts = line.split(' ');
 
     if (parts.isEmpty) return [];
 
@@ -41,7 +39,7 @@ class EventLoop {
 
     final args = parts.sublist(1);
     if (args.length < expectedArgs) {
-      throw FormatException('Недостаточно аргументов для команды $command');
+      throw FormatException('Not enough arguments for command: $command');
     }
 
     switch (expectedArgs) {
@@ -54,7 +52,8 @@ class EventLoop {
     }
   }
 
-  void _executeCommand(String commandName, dynamic firstValue, dynamic secondValue) {
+  void _executeCommand(String commandName, final firstValue,
+      final secondValue) {
     try {
       tvAction.executeCommand(commandName, firstValue, secondValue);
     } catch (e) {
@@ -68,8 +67,12 @@ class EventLoop {
       try {
         final List<String> commands = _parseActionList(action);
         String commandName = commands[0];
-        dynamic firstValue = commands.length > 1 ? _parseValue(commands[1]) : null;
-        dynamic secondValue = commands.length > 2 ? _parseValue(commands[2]) : null;
+        final firstValue = commands.length > 1
+            ? _parseValue(commands[1])
+            : null;
+        final secondValue = commands.length > 2
+            ? _parseValue(commands[2])
+            : null;
 
         _executeCommand(commandName, firstValue, secondValue);
       } catch (e) {
@@ -78,10 +81,8 @@ class EventLoop {
     }
   }
 
-  static dynamic _parseValue(String value) {
+  static _parseValue(String value) {
     if (int.tryParse(value) != null) {
-      return int.parse(value);
-    } else if (int.tryParse(value) != null) {
       return int.parse(value);
     } else {
       return value;

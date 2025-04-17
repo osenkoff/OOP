@@ -1,4 +1,7 @@
 class Television {
+  static const minChannel = 1;
+  static const maxChannel = 99;
+
   bool _isTurnOn = false;
   int _currentChannel = 1;
   int? _previousChannel;
@@ -21,11 +24,11 @@ class Television {
     _isTurnOn = false;
   }
 
-  void selectChannel(dynamic channel) {
+  void selectChannel(final channel) {
     if (!_isTurnOn) throw Exception('can not select a channel when TV is off');
 
     if (channel is int) {
-      if (!isValidChannel(channel)) throw Exception('unavailable channel selected');
+      if (!_isValidChannel(channel)) throw Exception('unavailable channel selected');
 
       _previousChannel = _currentChannel;
       _currentChannel = channel;
@@ -47,7 +50,7 @@ class Television {
   }
 
   void setChannelName(int channel, String channelName) {
-    if (!_isTurnOn || !isValidChannel(channel)) throw Exception('can not set channel name');
+    if (!_isTurnOn || !_isValidChannel(channel)) throw Exception('can not set channel name');
 
     _channelsList[channel] = channelName;
   }
@@ -59,8 +62,8 @@ class Television {
         .removeWhere((channel, channelName) => channelName == channelName);
   }
 
-  bool isValidChannel(int channel) {
-    return channel >= 1 && channel <= 99;
+  bool _isValidChannel(int channel) {
+    return channel >= minChannel && channel <= maxChannel;
   }
 
   String? getChannelName(int channel) {
