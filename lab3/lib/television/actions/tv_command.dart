@@ -26,15 +26,15 @@ class TurnOffCommand implements Command {
   }
 }
 
-class SelectChannelCommand implements Command {
+class SelectChannelCommand<T> implements Command {
   final TvController controller;
-  final channel;
+  final T channel;
 
   SelectChannelCommand(this.controller, this.channel);
 
   @override
   void execute() {
-    print(controller.selectChannel(channel));
+    print(controller.selectChannel<T>(channel));
   }
 }
 

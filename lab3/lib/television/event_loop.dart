@@ -10,6 +10,7 @@ class EventLoop {
     tvAction = TvAction(controller);
   }
 
+  // Получение списка команд из консоли
   List<String> _getActionsFromConsole() {
     List<String> actions = [];
     while (true) {
@@ -20,6 +21,7 @@ class EventLoop {
     return actions;
   }
 
+  // Парсинг строки в список команд
   List<String> _parseActionList(String line) {
     final parts = line.split(' ');
 
@@ -52,10 +54,11 @@ class EventLoop {
     }
   }
 
-  void _executeCommand(String commandName, final firstValue,
-      final secondValue) {
+  // Выполнение команды
+  void _executeCommand<T1, T2>(
+      String commandName, T1 firstValue, T2 secondValue) {
     try {
-      tvAction.executeCommand(commandName, firstValue, secondValue);
+      tvAction.executeCommand<T1, T2>(commandName, firstValue, secondValue);
     } catch (e) {
       print(e.toString());
     }
@@ -67,21 +70,33 @@ class EventLoop {
       try {
         final List<String> commands = _parseActionList(action);
         String commandName = commands[0];
-        final firstValue = commands.length > 1
-            ? _parseValue(commands[1])
-            : null;
-        final secondValue = commands.length > 2
-            ? _parseValue(commands[2])
-            : null;
 
-        _executeCommand(commandName, firstValue, secondValue);
+        // Парсим значения
+        final firstValue = _parseArgument(commands, 1);
+        final secondValue = _parseArgument(commands, 2);
+
+        if (firstValue is int && secondValue is String) {
+          _executeCommand<int, String>(commandName, firstValue, secondValue);
+        } else if (firstValue != null && secondValue == null) {
+          if (firstValue is int) {
+            _executeCommand<int, void>(commandName, firstValue, null);
+          } else if (firstValue is String) {
+            _executeCommand<String, void>(commandName, firstValue, null);
+          }
+        } else {
+          _executeCommand<String, void>(
+              commandName, firstValue.toString(), null);
+        }
       } catch (e) {
         print(e.toString());
       }
     }
   }
 
-  static _parseValue(String value) {
+  static dynamic _parseArgument(List<String> commands, int index) {
+    if (index >= commands.length) return null;
+
+    final value = commands[index];
     if (int.tryParse(value) != null) {
       return int.parse(value);
     } else {

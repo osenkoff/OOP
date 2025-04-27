@@ -1,5 +1,4 @@
 import 'package:lab3/television/actions/tv_command.dart';
-
 import '../tv_controller.dart';
 
 class TvAction {
@@ -7,35 +6,48 @@ class TvAction {
 
   TvAction(this.controller);
 
-  void executeCommand(String action, final firstValue, final secondValue) {
-    Command? receivedAction = _parseCommand(action, firstValue, secondValue);
+  void executeCommand<T1, T2>(String action, T1 firstValue, T2 secondValue) {
+    Command? receivedAction =
+        _parseCommand<T1, T2>(action, firstValue, secondValue);
     if (receivedAction != null) {
       receivedAction.execute();
       return;
     }
 
-    throw new Exception('Unavailable action received');
+    throw Exception('Unavailable action received');
   }
 
-  Command? _parseCommand(String action, final firstValue, final secondValue) {
+  Command? _parseCommand<T1, T2>(String action, T1 firstValue, T2 secondValue) {
     switch (action) {
       case 'TurnOn':
         return TurnOnCommand(controller);
       case 'TurnOff':
         return TurnOffCommand(controller);
       case 'SelectChannel':
-        return SelectChannelCommand(controller, firstValue);
+        return SelectChannelCommand<T1>(controller, firstValue);
       case 'SelectPreviousChannel':
         return SelectPreviousChannelCommand(controller);
       case 'SetChannelName':
-        return SetChannelNameCommand(controller, firstValue as int, secondValue as String);
+        if (firstValue is int && secondValue is String)
+          return SetChannelNameCommand(controller, firstValue, secondValue);
+
+        throw Exception('Invalid types for SetChannelName');
       case 'DeleteChannelName':
-        return DeleteChannelNameCommand(controller, firstValue as String);
+        if (firstValue is String)
+          return DeleteChannelNameCommand(controller, firstValue);
+
+        throw Exception('Invalid type for DeleteChannelName');
       case 'GetChannelName':
-        return GetChannelNameCommand(controller, firstValue);
-      case "GetChannelByName":
-        return GetChannelByNameCommand(controller, firstValue as String);
-      case "Info":
+        if (firstValue is int)
+          return GetChannelNameCommand(controller, firstValue);
+
+        throw Exception('Invalid type for GetChannelName');
+      case 'GetChannelByName':
+        if (firstValue is String)
+          return GetChannelByNameCommand(controller, firstValue);
+
+        throw Exception('Invalid type for GetChannelByName');
+      case 'Info':
         return InfoCommand(controller);
       default:
         return null;

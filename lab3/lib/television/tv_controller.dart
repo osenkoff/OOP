@@ -38,10 +38,10 @@ class TvController {
     return message;
   }
 
-  String selectChannel(final channel) {
+  String selectChannel<T>(T channel) {
     String message = '';
 
-    television.selectChannel(channel);
+    television.selectChannel<T>(channel);
     message = 'Channel switched to: $channel';
 
     return message;

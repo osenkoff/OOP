@@ -24,18 +24,18 @@ class Television {
     _isTurnOn = false;
   }
 
-  void selectChannel(final channel) {
-    if (!_isTurnOn) throw Exception('can not select a channel when TV is off');
+  void selectChannel<T>(T channel) {
+    if (!_isTurnOn) throw Exception('Cannot select a channel when TV is off');
 
     if (channel is int) {
-      if (!_isValidChannel(channel)) throw Exception('unavailable channel selected');
+      if (!_isValidChannel(channel)) throw Exception('Unavailable channel selected');
 
       _previousChannel = _currentChannel;
-      _currentChannel = channel;
+      _currentChannel = channel as int;
     }
 
     if (channel is String) {
-      if (!_channelsList.containsValue(channel)) throw Exception('unavailable channel selected');;
+      if (!_channelsList.containsValue(channel)) throw Exception('Unavailable channel selected');
 
       _currentChannel = _channelsList.keys
           .firstWhere((key) => _channelsList[key] == channel);
