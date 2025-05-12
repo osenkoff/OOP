@@ -1,0 +1,10 @@
+name: lab3
+description: lab3
+version: 1.0.0
+
+environment:
+  sdk: ">=3.0.0"
+dependencies:
+  either_dart: ^1.0.0
+dev_dependencies:
+  test: ^1.25.8
