@@ -1,28 +1,42 @@
-import 'gear.dart';
-import 'direction.dart';
+enum Gear {
+  reverse(-1),
+  neutral(0),
+  first(1),
+  second(2),
+  third(3),
+  fourth(4),
+  fifth(5);
+
+  final int value;
+
+  const Gear(this.value);
+}
+
+enum Direction {
+  forward,
+  stand,
+  back,
+}
 
 class Car {
   bool _isEngineOn = false;
-  Gear _gear = Gear.NEUTRAL;
-  Direction _direction = Direction.STAND;
+  Gear _gear = Gear.neutral;
   int _speed = 0;
   Map<Gear, (int, int)> _gearInfo = {};
 
   bool get isEngineOn => _isEngineOn;
   Gear get gear => _gear;
-  Direction get direction => _direction;
   int get speed => _speed;
-  Map<Gear, (int, int)> get gearInfo => _gearInfo;
 
   Car() {
     _gearInfo.addAll({
-      Gear.REVERSE: (0, 20),
-      Gear.NEUTRAL: (-20, 150),
-      Gear.FIRST: (0, 30),
-      Gear.SECOND: (20, 50),
-      Gear.THIRD: (30, 60),
-      Gear.FOURTH: (40, 90),
-      Gear.FIFTH: (50, 150),
+      Gear.reverse: (0, 20),
+      Gear.neutral: (-20, 150),
+      Gear.first: (0, 30),
+      Gear.second: (20, 50),
+      Gear.third: (30, 60),
+      Gear.fourth: (40, 90),
+      Gear.fifth: (50, 150),
     });
   }
 
@@ -32,50 +46,45 @@ class Car {
   }
 
   void turnOffEngine() {
-    bool isCarMoving = (_speed != 0 || _gear != Gear.NEUTRAL);
     if (!_isEngineOn) throw Exception('The engine is already off');
 
+    bool isCarMoving = _speed > 0 || _gear != Gear.neutral;
     if (isCarMoving) throw Exception('Сar must be stopped and in neutral gear');
 
     _isEngineOn = false;
   }
 
   void setGear(Gear gear) {
-    bool isInRangeOfCurrentSpeed = _isValidValue(gear, speed);
-
     if (!_isEngineOn) throw Exception('Сan`t set gear while engine is off');
 
-    if (_isEngineOn && !isInRangeOfCurrentSpeed) throw Exception('Unsuitable current speed');
-
-    if (!_isEngineOn && gear != Gear.NEUTRAL) throw Exception('');
+    bool isInRangeOfCurrentSpeed = _isValidRangeOfCurrentSpeed(gear, _speed);
+    if (!isInRangeOfCurrentSpeed) throw Exception('Unsuitable current speed');
 
     _gear = gear;
   }
 
   void setSpeed(int speed) {
-    bool isInRangeOfCurrentSpeed = _isValidValue(_gear, speed);
-    bool canSetNewSpeedOnNeutral = _gear == Gear.NEUTRAL && _speed.abs() < speed;
-
     if (!_isEngineOn) throw Exception('Cannot set speed while engine is off');
-
-    if (_isEngineOn && !isInRangeOfCurrentSpeed) throw Exception('Unsuitable current speed');
-
-    if (canSetNewSpeedOnNeutral) throw Exception('Can`t accelerate on neutral');
 
     if (speed < 0) throw Exception('Speed cannot be negative');
 
+    bool isInRangeOfCurrentSpeed = _isValidRangeOfCurrentSpeed(_gear, speed);
+    if (!isInRangeOfCurrentSpeed) throw Exception('Unsuitable current speed');
+
+    bool canSetNewSpeedOnNeutral =
+        _gear == Gear.neutral && _speed.abs() < speed;
+    if (canSetNewSpeedOnNeutral) throw Exception('Can`t accelerate on neutral');
+
     _speed = speed;
-    _direction = getDirection();
   }
 
   Direction getDirection() {
-    if (_speed == 0) return Direction.STAND;
+    if (_speed == 0) return Direction.stand;
 
-    bool isCarDrivingBack = _speed > 0 && _gear == Gear.REVERSE;
-    return isCarDrivingBack ? Direction.BACK : Direction.FORWARD;
+    return (_gear == Gear.reverse) ? Direction.back : Direction.forward;
   }
 
-  bool _isValidValue(Gear gear, int value) {
+  bool _isValidRangeOfCurrentSpeed(Gear gear, int value) {
     final range = _gearInfo[gear];
     if (range == null) return false;
     final (min, max) = range;

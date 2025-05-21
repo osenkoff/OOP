@@ -1,7 +1,4 @@
-import 'package:lab3/car/direction.dart';
-
 import 'car.dart';
-import 'gear.dart';
 
 class CarController {
   late final Car car;
@@ -12,15 +9,7 @@ class CarController {
     String message = '';
 
     message += 'Engine: ${car.isEngineOn ? 'on' : 'off'}\n';
-    message += 'Direction: ';
-    switch (car.direction) {
-      case Direction.FORWARD:
-        message += 'forward\n';
-      case Direction.BACK:
-        message += 'back\n';
-      default:
-        message += 'standing still\n';
-    }
+    message += 'Direction: ${car.getDirection()}';
     message += 'Speed: ${car.speed}\n';
     message += 'Gear: ${car.gear.value}';
 
