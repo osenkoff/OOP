@@ -57,8 +57,7 @@ class Car {
   void setGear(Gear gear) {
     if (!_isEngineOn) throw Exception('Сan`t set gear while engine is off');
 
-    bool isInRangeOfCurrentSpeed = _isValidRangeOfCurrentSpeed(gear, _speed);
-    if (!isInRangeOfCurrentSpeed) throw Exception('Unsuitable current speed');
+    if (!_isValidRangeOfCurrentSpeed(gear, _speed)) throw Exception('Unsuitable current speed');
 
     _gear = gear;
   }
@@ -68,8 +67,7 @@ class Car {
 
     if (speed < 0) throw Exception('Speed cannot be negative');
 
-    bool isInRangeOfCurrentSpeed = _isValidRangeOfCurrentSpeed(_gear, speed);
-    if (!isInRangeOfCurrentSpeed) throw Exception('Unsuitable current speed');
+    if (!_isValidRangeOfCurrentSpeed(_gear, speed)) throw Exception('Unsuitable current speed');
 
     bool canSetNewSpeedOnNeutral =
         _gear == Gear.neutral && _speed.abs() < speed;
@@ -84,10 +82,10 @@ class Car {
     return (_gear == Gear.reverse) ? Direction.back : Direction.forward;
   }
 
-  bool _isValidRangeOfCurrentSpeed(Gear gear, int value) {
+  bool _isValidRangeOfCurrentSpeed(Gear gear, int speed) {
     final range = _gearInfo[gear];
     if (range == null) return false;
-    final (min, max) = range;
-    return value >= min && value <= max;
+    final (minSpeed, maxSpeed) = range;
+    return speed >= minSpeed && speed <= maxSpeed;
   }
 }

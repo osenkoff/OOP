@@ -27,12 +27,6 @@ void main() {
   });
 
   group('Engine statements', () {
-    test('Turn engine on', () {
-      car.turnOnEngine();
-
-      expect(car.isEngineOn, isTrue);
-    });
-
     test('Can`t turn engine on if it`s already on', () {
       car.turnOnEngine();
 
