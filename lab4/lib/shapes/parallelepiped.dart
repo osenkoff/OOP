@@ -1,6 +1,6 @@
-import 'bodies/solid_body.dart';
+import 'bodies/body.dart';
 
-class Parallelepiped extends SolidBody {
+class Parallelepiped extends Body {
   final double _width;
   final double _height;
   final double _depth;

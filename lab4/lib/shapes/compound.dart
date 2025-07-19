@@ -1,39 +1,58 @@
-import 'bodies/solid_body.dart';
+import 'bodies/body.dart';
 
-class Compound extends SolidBody {
-  final List<SolidBody> _children = [];
+class Compound extends Body {
+  final List<Body> _children = [];
 
-  Compound(super.density);
+  Compound() : super(0);
 
-  @override
-  double getVolume() => _children.map((b) => b.getVolume()).fold(0, (a, b) => a + b);
-
-  @override
-  double getMass() => _children.map((b) => b.getMass()).fold(0, (a, b) => a + b);
-
-  double getAverageDensity() => getMass() / getVolume();
-
-  bool addChildBody(SolidBody child) {
-    if (child == this || _hasCycle(this, child)) return false;
+  bool addChildBody(Body child) {
+    if (child == this || _wouldCauseCycle(child)) {
+      return false;
+    }
     _children.add(child);
     return true;
   }
 
-  bool _hasCycle(Compound parent, SolidBody child) {
-    if (child == parent) return true;
+  List<Body> getChildBodies() => List.unmodifiable(_children);
+
+  bool _wouldCauseCycle(Body child) {
     if (child is! Compound) return false;
 
-    for (final subChild in child._children) {
-      if (_hasCycle(parent, subChild)) return true;
+    final visited = <Body>{};
+    final stack = <Body>[child];
+
+    while (stack.isNotEmpty) {
+      final current = stack.removeLast();
+      if (visited.contains(current)) continue;
+      visited.add(current);
+
+      if (current == this) return true;
+
+      if (current is Compound) {
+        stack.addAll(current.getChildBodies());
+      }
     }
+
     return false;
   }
 
   @override
+  double getVolume() =>
+      _children.map((b) => b.getVolume()).fold(0, (a, b) => a + b);
+
+  @override
+  double getMass() =>
+      _children.map((b) => b.getMass()).fold(0, (a, b) => a + b);
+
+  double getAverageDensity() {
+    final volume = getVolume();
+    return volume > 0 ? getMass() / volume : 0;
+  }
+
   double getWeightInWater() {
     const double waterDensity = 1000;
     const double gravity = 9.81;
-    double averageDensity = getAverageDensity();
+    final averageDensity = getAverageDensity();
     return (averageDensity - waterDensity) * getVolume() * gravity;
   }
 }

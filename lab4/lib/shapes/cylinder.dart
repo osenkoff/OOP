@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'bodies/solid_body.dart';
+import 'bodies/body.dart';
 
-class Cylinder extends SolidBody {
+class Cylinder extends Body {
   final double _baseRadius;
   final double _height;
 

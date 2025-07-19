@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'bodies/solid_body.dart';
+import 'bodies/body.dart';
 
-class Sphere extends SolidBody {
+class Sphere extends Body {
   final double _radius;
 
   double get radius => _radius;

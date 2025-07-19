@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'bodies/solid_body.dart';
+import 'bodies/body.dart';
 
-class Cone extends SolidBody {
+class Cone extends Body {
   final double _baseRadius;
   final double _height;
 

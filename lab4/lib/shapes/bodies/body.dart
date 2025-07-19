@@ -1,10 +1,11 @@
+import 'package:meta/meta.dart';
+
 abstract class Body {
-  double _density;
-  double get density => _density;
-  set density(double value) => _density = value;
+  final double _density;
 
-  Body(this._density);
+  Body(double density): _density = density;
 
+  @mustBeOverridden
   double getVolume();
   double getMass() => _density * getVolume();
 
