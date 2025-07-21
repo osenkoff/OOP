@@ -3,16 +3,21 @@ import 'package:meta/meta.dart';
 abstract class Body {
   final double _density;
 
-  Body(double density): _density = density;
+  Body(this._density) {
+    if (_density <= 0) throw ArgumentError('Плотность должна быть положительной.');
+  }
+
+  double getDensity() => _density;
 
   @mustBeOverridden
   double getVolume();
-  double getMass() => _density * getVolume();
+
+  double getMass() => getDensity() * getVolume();
 
   double getWeightInWater() {
     const double waterDensity = 1000;
     const double gravity = 9.81;
 
-    return (getMass() - waterDensity * getVolume()) * gravity;
+    return (getDensity() - waterDensity) * gravity * getVolume();
   }
 }

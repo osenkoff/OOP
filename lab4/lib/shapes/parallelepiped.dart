@@ -5,18 +5,12 @@ class Parallelepiped extends Body {
   final double _height;
   final double _depth;
 
-  double get width => _width;
-  double get height => _height;
-  double get depth => _depth;
-
-  Parallelepiped(double width, double height, double depth, super.density)
-      :
-        _width = width,
-        _height = height,
-        _depth = depth;
+  Parallelepiped(this._width, this._height, this._depth, double density) : super(density) {
+    if (_width <= 0) throw ArgumentError('Width must be positive');
+    if (_height <= 0) throw ArgumentError('Height must be positive');
+    if (_depth <= 0) throw ArgumentError('Depth must be positive');
+  }
 
   @override
-  double getVolume() {
-    return _width * _height * _depth;
-  }
+  double getVolume() => _width * _height * _depth;
 }

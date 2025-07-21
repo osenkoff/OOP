@@ -5,12 +5,10 @@ import 'bodies/body.dart';
 class Sphere extends Body {
   final double _radius;
 
-  double get radius => _radius;
-
-  Sphere(double radius, super.density) : _radius = radius;
+  Sphere(this._radius, double density) : super(density) {
+    if (_radius <= 0) throw ArgumentError('Radius must be positive');
+  }
 
   @override
-  double getVolume() {
-    return (4 / 3) * pi * pow(_radius, 3);
-  }
+  double getVolume() => (4 / 3) * pi * pow(_radius, 3);
 }

@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'controller.dart';
+import 'shapes/bodies/body.dart';
 
 class ShapeParameters {
   final String type;
   final List<double> dimensions;
-  final List<int> indices;
+  final List<Body> bodiesToAdd;
 
-  ShapeParameters(this.type, {this.dimensions = const [], this.indices = const []});
+  ShapeParameters(this.type, {this.dimensions = const [], this.bodiesToAdd = const []});
 }
 
 class EventLoop {
@@ -22,7 +23,6 @@ class EventLoop {
     }
 
     final value = double.tryParse(input);
-
     if (value == null) {
       throw ArgumentError('Ошибка: "$prompt" должен быть числом.');
     }
@@ -86,19 +86,24 @@ class EventLoop {
         if (controller.bodies.isEmpty) {
           throw ArgumentError('Ошибка: нет доступных тел для создания составного тела.');
         }
+
         print('Доступные тела:');
         for (int i = 0; i < controller.bodies.length; i++) {
           final body = controller.bodies[i];
-          print(
-              '$i. ${body.runtimeType} (V=${body.getVolume().toStringAsFixed(2)}, m=${body.getMass().toStringAsFixed(2)})');
+          print('$i. ${body.runtimeType} (V=${body.getVolume().toStringAsFixed(2)}, m=${body.getMass().toStringAsFixed(2)})');
         }
+
         final indices = _parseIndices('Введите индексы тел');
+        final bodiesToAdd = <Body>[];
+
         for (final index in indices) {
           if (index < 0 || index >= controller.bodies.length) {
             throw ArgumentError('Ошибка: индекс $index вне диапазона (0..${controller.bodies.length - 1}).');
           }
+          bodiesToAdd.add(controller.bodies[index]);
         }
-        return ShapeParameters('compound', indices: indices);
+
+        return ShapeParameters('compound', bodiesToAdd: bodiesToAdd);
 
       case 'info':
         return ShapeParameters('info');
@@ -123,6 +128,7 @@ class EventLoop {
 
       try {
         final params = _parseShapeParameters(action);
+
         switch (params.type.toLowerCase()) {
           case 'sphere':
             controller.createSphere(params.dimensions[0], params.dimensions[1]);
@@ -131,22 +137,34 @@ class EventLoop {
 
           case 'parallelepiped':
             controller.createParallelepiped(
-                params.dimensions[0], params.dimensions[1], params.dimensions[2], params.dimensions[3]);
+              params.dimensions[0],
+              params.dimensions[1],
+              params.dimensions[2],
+              params.dimensions[3],
+            );
             print('Параллелепипед успешно создан!');
             break;
 
           case 'cylinder':
-            controller.createCylinder(params.dimensions[0], params.dimensions[1], params.dimensions[2]);
+            controller.createCylinder(
+              params.dimensions[0],
+              params.dimensions[1],
+              params.dimensions[2],
+            );
             print('Цилиндр успешно создан!');
             break;
 
           case 'cone':
-            controller.createCone(params.dimensions[0], params.dimensions[1], params.dimensions[2]);
+            controller.createCone(
+              params.dimensions[0],
+              params.dimensions[1],
+              params.dimensions[2],
+            );
             print('Конус успешно создан!');
             break;
 
           case 'compound':
-            final compound = controller.createCompound(params.indices);
+            final compound = controller.createCompound(params.bodiesToAdd);
             if (compound != null) {
               print('Составное тело успешно создано!');
             }

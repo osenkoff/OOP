@@ -11,85 +11,51 @@ class Controller {
   List<Body> get bodies => List.unmodifiable(_bodies);
 
   Body createSphere(double radius, double density) {
-    if (radius <= 0) throw ArgumentError("Радиус должен быть положительным.");
-
-    if (density <= 0) {
-      throw ArgumentError("Плотность должна быть положительной.");
-    }
-
     final sphere = Sphere(radius, density);
     _bodies.add(sphere);
-
     return sphere;
   }
 
   Body createParallelepiped(
       double width, double height, double depth, double density) {
-    if (width <= 0 || height <= 0 || depth <= 0) {
-      throw ArgumentError("Все размеры должны быть положительными.");
-    }
-
-    if (density <= 0) {
-      throw ArgumentError("Плотность должна быть положительной.");
-    }
-
     final parallelepiped = Parallelepiped(width, height, depth, density);
     _bodies.add(parallelepiped);
-
     return parallelepiped;
   }
 
   Body createCylinder(double radius, double height, double density) {
-    if (radius <= 0 || height <= 0) {
-      throw ArgumentError("Радиус и высота должны быть положительными.");
-    }
-
-    if (density <= 0) {
-      throw ArgumentError("Плотность должна быть положительной.");
-    }
-
     final cylinder = Cylinder(radius, height, density);
     _bodies.add(cylinder);
-
     return cylinder;
   }
 
   Body createCone(double radius, double height, double density) {
-    if (radius <= 0 || height <= 0) {
-      throw ArgumentError("Радиус и высота должны быть положительными.");
-    }
-
-    if (density <= 0) {
-      throw ArgumentError("Плотность должна быть положительной.");
-    }
-
     final cone = Cone(radius, height, density);
     _bodies.add(cone);
     return cone;
   }
 
-  Compound? createCompound(List<int> bodyIndices) {
-    if (_bodies.isEmpty) {
-      print('Нет существующих тел для добавления!');
+  Compound? createCompound(List<Body> bodiesToAdd) {
+    if (bodiesToAdd.isEmpty) {
+      print('Не указаны тела для создания составного тела.');
       return null;
     }
 
-    final compound = Compound();
+    final compound = Compound(0);
     bool addedAny = false;
 
-    for (final index in bodyIndices) {
-      if (index < 0 || index >= _bodies.length) {
-        print('Ошибка: индекс $index должен быть от 0 до ${_bodies.length - 1}');
+    for (final body in bodiesToAdd) {
+      if (!_bodies.contains(body)) {
+        print('Предупреждение: Тело $body не управляется контроллером.');
         continue;
       }
 
-      final bodyToAdd = _bodies[index];
-
-      if (compound.addChildBody(bodyToAdd)) {
-        print('Тело ${bodyToAdd.runtimeType} (индекс $index) успешно добавлено.');
+      if (compound.addChildBody(body)) {
+        print('Тело ${body.runtimeType} успешно добавлено.');
         addedAny = true;
       } else {
-        print('Ошибка: не удалось добавить тело ${bodyToAdd.runtimeType} (индекс $index) из-за циклической зависимости.');
+        print(
+            'Ошибка: Не удалось добавить ${body.runtimeType} из-за циклической зависимости.');
       }
     }
 
@@ -97,6 +63,7 @@ class Controller {
       _bodies.add(compound);
       return compound;
     }
+
     return null;
   }
 
@@ -108,7 +75,8 @@ class Controller {
 
     print('Информация о телах:');
     for (var body in _bodies) {
-      print('${body.runtimeType} - Объём: ${body.getVolume().toStringAsFixed(2)}, Масса: ${body.getMass().toStringAsFixed(2)}, Вес в воде: ${body.getWeightInWater().toStringAsFixed(2)}');
+      print(
+          '${body.runtimeType} - Объём: ${body.getVolume().toStringAsFixed(2)}, Масса: ${body.getMass().toStringAsFixed(2)}, Вес в воде: ${body.getWeightInWater().toStringAsFixed(2)}');
     }
 
     if (_bodies.length > 1) {
@@ -119,6 +87,7 @@ class Controller {
       } catch (e) {
         print('Ошибка при поиске тела с наибольшей массой: $e');
       }
+
       try {
         final minWaterWeightBody = findMinWeightInWater();
         print(
@@ -136,6 +105,7 @@ class Controller {
 
   Body findMinWeightInWater() {
     if (_bodies.isEmpty) throw ArgumentError("Список тел пуст.");
-    return _bodies.reduce((a, b) => a.getWeightInWater() < b.getWeightInWater() ? a : b);
+    return _bodies
+        .reduce((a, b) => a.getWeightInWater() < b.getWeightInWater() ? a : b);
   }
 }

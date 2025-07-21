@@ -1,20 +1,15 @@
 import 'dart:math';
-
 import 'bodies/body.dart';
 
 class Cone extends Body {
-  final double _baseRadius;
+  final double _radius;
   final double _height;
 
-  double get baseRadius => _baseRadius;
-  double get height => _height;
-
-  Cone(double baseRadius, double height, super.density)
-      : _baseRadius = baseRadius,
-        _height = height;
+  Cone(this._radius, this._height, double density) : super(density) {
+    if (_radius <= 0) throw ArgumentError('Radius must be positive');
+    if (_height <= 0) throw ArgumentError('Height must be positive');
+  }
 
   @override
-  double getVolume() {
-    return (1 / 3) * pi * pow(_baseRadius, 2) * _height;
-  }
+  double getVolume() => (1 / 3) * pi * pow(_radius, 2) * _height;
 }

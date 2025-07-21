@@ -3,7 +3,7 @@ import 'bodies/body.dart';
 class Compound extends Body {
   final List<Body> _children = [];
 
-  Compound() : super(0);
+  Compound(super.density);
 
   bool addChildBody(Body child) {
     if (child == this || _wouldCauseCycle(child)) {
@@ -38,21 +38,12 @@ class Compound extends Body {
 
   @override
   double getVolume() =>
-      _children.map((b) => b.getVolume()).fold(0, (a, b) => a + b);
+      _children.map((b) => b.getVolume()).fold(0.0, (a, b) => a + b);
 
   @override
   double getMass() =>
-      _children.map((b) => b.getMass()).fold(0, (a, b) => a + b);
+      _children.map((b) => b.getMass()).fold(0.0, (a, b) => a + b);
 
-  double getAverageDensity() {
-    final volume = getVolume();
-    return volume > 0 ? getMass() / volume : 0;
-  }
-
-  double getWeightInWater() {
-    const double waterDensity = 1000;
-    const double gravity = 9.81;
-    final averageDensity = getAverageDensity();
-    return (averageDensity - waterDensity) * getVolume() * gravity;
-  }
+  @override
+  double getDensity() => getVolume() > 0 ? getMass() / getVolume() : 0;
 }
